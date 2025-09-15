@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './DoctorProfilePage.css';
 import IndividualDoctorProfile from './IndividualDoctorProfile';
 import { useCookies } from 'react-cookie';
+import { apiUrl } from "./api"; // fix path as needed
 
 const DoctorsProfilePage = () => {
   const [cookies] = useCookies(['medgenai']);
@@ -11,7 +12,7 @@ const DoctorsProfilePage = () => {
   useEffect(() => {
     const fetchDoctorProfiles = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/docters');
+        const response = await fetch(apiUrl("/docters"));
         if (!response.ok) {
           throw new Error('Failed to fetch doctor profiles');
         }
@@ -25,7 +26,7 @@ const DoctorsProfilePage = () => {
 
     const fetchHealthSeakerProfile = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/users');
+        const response = await fetch(apiUrl("/users"));
         if (!response.ok) {
           throw new Error('Failed to fetch doctor profiles');
         }

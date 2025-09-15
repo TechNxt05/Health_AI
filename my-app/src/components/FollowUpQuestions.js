@@ -6,6 +6,7 @@ import DiagnosisReport from './DiagonsisReport';
 import TreatmentPlan from './TreatmentPlan';
 import Loader from './Loader';
 import './TimeLine.css';
+import { API_BASE, apiUrl } from "../../api"; 
 // Timeline component
 const Timeline = ({ activeStep, setActiveStep }) => {
   const stages = [
@@ -68,7 +69,7 @@ const FollowUpQuestions = () => {
     setLoading(true);
     try {
       console.log(data);
-      const response = await axios.post(API_URL + '/predict', { data });
+      const response = await axios.post(apiUrl("/predict"), data );
       console.log('Respone from predicted 1', response?.data);
       setPredictDisease(response?.data);
     } catch (err) {

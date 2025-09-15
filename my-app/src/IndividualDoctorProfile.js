@@ -5,6 +5,7 @@ import '@smastrom/react-rating/style.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {toast} from 'react-hot-toast';
+import { apiUrl } from "./api";
 const IndividualDoctorProfile = ({ profile ,user,setLoading}) => {
   const navigate = useNavigate();
   const limitDescription = (description) => {
