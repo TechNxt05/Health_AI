@@ -1,0 +1,127 @@
+{
+  "name": "react-chatbotui",
+  "version": "1.0.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jahmed93/react-chatbot"
+  },
+  "author": {
+    "name": "jahmed93",
+    "email": "dev.jahmed@gmail.com",
+    "url": "https://github.com/jahmed93"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@fontsource/roboto": "^5.1.0",
+    "@mui/icons-material": "^6.1.3",
+    "@mui/material": "^6.1.3",
+    "@mui/styled-engine-sc": "^6.1.3",
+    "@react-google-maps/api": "^2.20.3",
+    "@smastrom/react-rating": "^1.5.0",
+    "@tensorflow/tfjs": "^4.22.0",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@zegocloud/zego-uikit-prebuilt": "^2.12.0",
+    "axios": "^1.7.7",
+    "bad-words": "^3.0.4",
+    "chart.js": "^4.4.3",
+    "cloudinary-react": "^1.8.1",
+    "daisyui": "^2.51.6",
+    "html2canvas": "^1.4.1",
+    "js-cookie": "^3.0.5",
+    "jspdf": "^2.5.2",
+    "moment": "^2.29.4",
+    "openai": "^3.2.1",
+    "papaparse": "^5.4.1",
+    "react": "^18.3.1",
+    "react-chartjs-2": "^5.3.0",
+    "react-chatbotui": "file:",
+    "react-cookie": "^7.2.1",
+    "react-dom": "^18.3.1",
+    "react-ga4": "^2.1.0",
+    "react-hot-toast": "^2.5.1",
+    "react-icons": "^5.3.0",
+    "react-markdown": "^8.0.7",
+    "react-router-dom": "6.27.0",
+    "react-scripts": "5.0.1",
+    "react-speech": "^1.0.2",
+    "react-speech-recognition": "^3.10.0",
+    "react-syntax-highlighter": "^15.5.0",
+    "react-to-pdf": "^1.0.1",
+    "react-tooltip": "^5.16.1",
+    "react-type-animation": "^3.2.0",
+    "reactjs-popup": "^2.0.6",
+    "remark-gfm": "^3.0.1",
+    "socket.io-client": "^4.8.1",
+    "styled-components": "^6.1.13",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint src/**/*.{js,jsx,ts,tsx,json}",
+    "lint:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx,json}'",
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.13",
+    "eslint": "^8.43.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.3",
+    "postcss": "^8.4.20",
+    "prettier": "^2.8.8",
+    "tailwindcss": "^3.4.13"
+  },
+  "keywords": [
+    "openai",
+    "chatgpt",
+    "text-davinci-003",
+    "dalle",
+    "dall.e",
+    "dalle2",
+    "gpt",
+    "gpt3",
+    "image generation",
+    "machine learning",
+    "conversational ai",
+    "conversation",
+    "chatbot",
+    "chat",
+    "bot",
+    "ai",
+    "ml",
+    "bot"
+  ]
+}

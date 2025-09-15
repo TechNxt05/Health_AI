@@ -1,0 +1,909 @@
+.App {
+  text-align: center;
+}
+:root {
+  --blueColor: #81d2f0;
+  --greenColor: #6aa84f;
+  --lightBlueColor: #b2dded;
+  --lightGreenColor: #84f057;
+}
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.chat-section-main {
+  height: calc(100vh - 70px);
+  overflow-y: scroll;
+}
+
+.App-header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.mic_container {
+  display: flex;
+  /* border:1px solid rgb(145, 143, 143); */
+  width: 100px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.speak {
+  font-size: 10px; /* Change this value to your desired size */
+  color: black; /* Optional: Change text color if needed */
+  margin: 10px 0;
+}
+.speaker {
+  font-size: 20px;
+  cursor: pointer;
+}
+.speaker:hover {
+  color: blue;
+}
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+  /* box-shadow: 0 1px 5px #6f6f6f; */
+  background: transparent;
+  color: #283779;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  transition: backdrop-filter 0.3s ease, background-color 0.3s ease;
+}
+
+.scrolled {
+  backdrop-filter: blur(2px);
+}
+
+.navbar .logo {
+  font-size: 20px;
+  font-weight: 700;
+  margin-left: 20px;
+  text-decoration: underline;
+}
+
+.ulLinks {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+}
+
+.linkItem {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.linkItem {
+  position: relative;
+  cursor: pointer;
+  padding: 0px 10px;
+}
+
+.linkItem::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  left: 2px;
+  bottom: 0;
+  background-color: white;
+  transition: width 0.3s ease;
+}
+
+.linkItem:hover::after {
+  width: 90%;
+}
+
+.userProfile {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: aliceblue;
+  margin-right: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.homePage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: white;
+  /* margin-bottom: 100px; */
+  /* position: relative; */
+}
+
+.homepage-background-image {
+  position: absolute;
+  width: 100%;
+  min-height: 100%;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  will-change: transform, opacity, filter;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  background-repeat: no-repeat;
+  z-index: 100;
+  background-image: url(https://technext.github.io/live-doc/v1.0.0/assets/img/gallery/hero-bg.png);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.homepageChatBot {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background-color: #05c37d;
+  cursor: pointer;
+  position: fixed;
+  right: 20px;
+  z-index: 1000;
+  bottom: 100px;
+}
+
+.homepageChatBot:hover {
+  background-color: #09f467da;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  width: 40%;
+}
+
+.description h3 {
+  color: white;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.description h3 .Homepageheading {
+  color: #05c37d;
+}
+
+.moving-text {
+  color: white;
+}
+
+.description p {
+  color: #283779;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.videoFile {
+  width: 450px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #333;
+  overflow: hidden;
+}
+
+.cardCompnent {
+  width: 90%;
+  background-color: white;
+  position: relative;
+  top: -100px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px #33333393;
+  padding: 20px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.imageComponent {
+  width: 90%;
+  height: 90vh;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  /* display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center; */
+}
+
+.heading {
+  position: absolute;
+  top: 15%;
+  left: 5%;
+  font-size: 62px;
+  font-weight: 900;
+  color: white;
+  text-shadow: 0 0 10px #333;
+}
+
+.imageComponent img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.homePagePara {
+  position: absolute;
+  width: 30%;
+  top: 30%;
+  left: 5%;
+  color: rgba(128, 128, 128, 0.744);
+  display: inline-block;
+}
+
+.chatButton {
+  position: absolute;
+  top: 10%;
+  right: 20%;
+  z-index: 5;
+}
+.navigateButtons {
+  padding: 5px 20px;
+  background-color: rgb(153, 23, 235);
+  border-radius: 30px;
+  font-size: 32px;
+  color: greenyellow;
+  font-weight: 700;
+  box-shadow: 0 0 10px #333;
+  cursor: pointer;
+}
+
+.datasetGen {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 70px;
+}
+
+.datasetfromdesc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 450px;
+  background-color: white;
+  padding: 12px 12px;
+  margin-top: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px #333;
+}
+
+.datasetfromdeschead {
+  color: #283779;
+  font-size: 32px;
+}
+
+.datasetgenform {
+  display: flex;
+  flex-direction: column;
+}
+
+.datasetgeninput {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #333;
+}
+
+.datasetgeninput input {
+  padding: 6px 6px;
+  width: 380px;
+  border-radius: 6px;
+  background-color: white;
+  border: 1px solid #333;
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.addmorebutton {
+  background-color: rgba(12, 89, 245, 0.982);
+  width: 150px;
+  padding: 5px 5px;
+  color: white;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+
+.submitbutton {
+  background-color: rgba(16, 245, 12, 0.982);
+  width: 150px;
+  padding: 5px 5px;
+  color: white;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+.covariancebutton {
+  background-color: rgba(117, 12, 245, 0.982);
+  width: 150px;
+  padding: 5px 5px;
+  color: white;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+.accuracybutton {
+  background-color: rgba(117, 12, 245, 0.982);
+  width: 150px;
+  padding: 5px 5px;
+  color: white;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+
+.sizeInputBox {
+  padding: 6px 6px;
+  width: 380px;
+  border-radius: 6px;
+  border-bottom: 1px solid white;
+  background-color: white;
+  border: 1px solid #333;
+  color: #333;
+}
+
+.upload-csv-container {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: white;
+  color: aliceblue;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.file-upload-container {
+  padding: 10px;
+  margin: 10px;
+  width: 99%;
+  background-color: #488aec;
+  display: flex;
+  /* justify-content: space-around; */
+  align-items: center;
+  overflow-y: scroll;
+  box-shadow: 0 0 10px #333;
+  border-radius: 10px;
+  /* border:2px solid red; */
+}
+.file-upload-container button {
+  border: 2px solid black;
+  padding: 10px;
+  margin: 10px;
+  width: 130px;
+}
+.width500px {
+  width: 500px;
+}
+
+.loader_div_in_drug_generation {
+  width: 100%;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.width200px {
+  max-width: 400px;
+  margin-right: 200px;
+}
+.file-upload-container button:hover {
+  background-color: azure;
+  color: black;
+}
+.button-for-file-upload {
+  border: none;
+  display: flex;
+  padding: 0.75rem 1.5rem;
+  background-color: #488aec;
+  color: #ffffff;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  text-transform: uppercase;
+  vertical-align: middle;
+  align-items: center;
+  border-radius: 0.5rem;
+  user-select: none;
+  gap: 0.75rem;
+  box-shadow: 0 4px 6px -1px #488aec31, 0 2px 4px -1px #488aec17;
+  transition: all 0.6s ease;
+}
+
+.loader_div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  padding-top: 200px;
+}
+.button-for-file-upload:hover {
+  box-shadow: 0 10px 15px -3px #488aec4f, 0 4px 6px -2px #488aec17;
+}
+
+.button-for-file-upload:focus,
+.button-for-file-upload:active {
+  opacity: 0.85;
+  box-shadow: none;
+}
+
+.button-for-file-upload svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.simple-heading {
+  font-size: 1.4rem;
+  /* font-family: 'Times New Roman', Times, serif; */
+  padding-right: 50px;
+}
+/* From Uiverse.io by Satwinder04 */
+/* Input container */
+.input-container {
+  position: relative;
+  margin: 20px;
+  width: 400px;
+  /* border:1px solid red; */
+}
+.image-container {
+  width: 100%;
+  height: 80vh;
+  overflow-y: auto;
+}
+
+/* Input field */
+.input-field {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  outline: none;
+  background-color: transparent;
+}
+
+/* Input label */
+.input-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 16px;
+  color: rgba(204, 204, 204, 0);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+/* Input highlight */
+.input-highlight {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background-color: #007bff;
+  transition: all 0.3s ease;
+}
+
+/* Input field:focus styles */
+.input-field:focus + .input-label {
+  top: -20px;
+  font-size: 12px;
+  color: #007bff;
+}
+
+.input-field:focus + .input-label + .input-highlight {
+  width: 100%;
+}
+
+.size-input-of-dataset {
+  padding: 10px;
+  width: 300px;
+}
+.size-input-of-dataset:focus {
+  outline: none;
+  border: 1px solid #ccc; /* Optional: set a custom border */
+}
+
+/* ============btn bar in the data generation======================== */
+.data-analysis-section {
+  width: 100%;
+  background-color: #d3d3d3;
+  display: flex;
+  align-items: center;
+  padding-bottom: 10px;
+  margin: 0;
+  padding: 0;
+}
+.btn-for-different-section {
+  padding: 10px;
+  margin: 10px;
+}
+.analysis-container-image {
+  width: 100%;
+  display: flex;
+}
+
+.analysis-container-image div {
+  width: 50%;
+  /* padding:5px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  justify-content: center;
+  border: 2px solid rgb(33, 12, 12);
+}
+.each-image {
+  width: 100%;
+}
+
+.image-of-data-visualisation {
+  width: 600px;
+  padding: 5px;
+  margin: 5px;
+}
+
+/* ============data table CSS============== */
+.table_container {
+  padding: 10px;
+  margin: 10px;
+  width: 100%;
+  /* min-height:10px;
+  max-height:50vh; */
+  background-color: #333;
+  display: flex;
+  justify-content: center;
+  overflow-y: scroll;
+}
+table {
+  border: 2px solid rgb(4, 4, 4);
+}
+thead {
+  border: 2px solid grey;
+  background-color: #282c34;
+  color: white;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+th {
+  border: 2px solid grey;
+  padding: 2px;
+  margin: 2px;
+}
+td {
+  border-left: 2px solid grey;
+  border-right: 2px solid grey;
+  padding: 2px;
+  margin: 2px;
+}
+
+/* =========generate Button Csss========== */
+/* From Uiverse.io by AlimurtuzaCodes */
+.generate-btn {
+  border: none;
+  border: 2px solid;
+  width: 2em;
+  height: 4em;
+  border-radius: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  background: #1c1a1c;
+  cursor: pointer;
+  transition: all 450ms ease-in-out;
+  display: flex;
+}
+
+.sparkle {
+  fill: #aaaaaa;
+  transition: all 800ms ease;
+}
+
+.text {
+  font-weight: 600;
+  color: #aaaaaa;
+  font-size: medium;
+}
+
+.generate-btn:hover {
+  background: linear-gradient(0deg, #a47cf3, #683fea);
+  box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
+    inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 4px rgba(255, 255, 255, 0.2),
+    0px 0px 180px 0px #9917ff;
+  transform: translateY(-2px);
+}
+
+.generate-btn:hover .text {
+  color: white;
+}
+
+.generate-btn:hover .sparkle {
+  fill: white;
+  transform: scale(1.2);
+}
+
+.drug-generation-container {
+  width: 100%;
+  color: #283779;
+  margin-top: 70px;
+}
+
+.result-container {
+  /* border:2px solid red; */
+  width: 100%;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.result-container .basic-information {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* border:2px solid grey; */
+  /* padding:10px;
+  margin:10px; */
+  box-sizing: border-box;
+  color: black;
+}
+
+.potential_targets {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* border:2px solid grey; */
+  /* padding:10px;
+  margin:10px; */
+  box-sizing: border-box;
+  color: black;
+}
+.width100 {
+  width: 100%;
+  /* border:1px solid red; */
+  justify-self: flex-start;
+  box-sizing: border-box;
+}
+.flexinrow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.flexincol {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+.drug-info-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: baseline;
+  align-items: flex-start;
+  margin-left: 30px;
+  margin-right: 30px;
+  font-size: large;
+  /* border:1px solid green; */
+}
+.target-drug-card-container {
+  max-height: 500px;
+  overflow-y: auto;
+}
+.scrollinx {
+  overflow-x: auto;
+}
+.flexcenter {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.list-style {
+  list-style-type: disc;
+  display: flex;
+  flex-direction: column;
+  justify-items: flex-start;
+}
+.new-drug-candidate-card {
+  width: 100%;
+  /* border:2px solid red; */
+  display: flex;
+  flex-direction: row;
+  background-color: var(--lightBlueColor);
+  padding: 5px;
+  margin: 5px;
+}
+.bottomborder-bottom-padding {
+  border-bottom: 2px solid grey;
+  padding-bottom: 10px;
+}
+.left-box {
+  width: 70%;
+  /* border:2px solid rdrug_likenessed; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  padding-left: 20px;
+}
+
+.right-box {
+  width: 30%;
+  /* border:2px solid red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.key-index-repeater {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid #333;
+  color: rgb(0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.big-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.general-Info {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 1.5rem;
+  padding: 10px;
+}
+.general-Info {
+  background-color: #92929282;
+}
+.redcolrtext {
+  color: red;
+  font-style: italic;
+}
+
+.known-treatment-drug-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  overflow-y: auto;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  box-sizing: border-box;
+}
+
+.drug-card-from-fever {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  height: 400px;
+  border: 2px solid var(--greenColor);
+  border-radius: 5px;
+  margin: 5px;
+  font-weight: 400;
+  overflow: hidden;
+}
+/* Style the scrollbar */
+.known-treatment-drug-container::-webkit-scrollbar {
+  width: 11px; /* Set a thin width */
+}
+
+.known-treatment-drug-container::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Optional: background color for the track */
+}
+
+.known-treatment-drug-container::-webkit-scrollbar-thumb {
+  height: 1px;
+  width: 12px;
+  background: var(--greenColor); /* Color for the scrollbar thumb */
+  border-radius: 2px; /* Makes the scrollbar thumb rounded */
+}
+
+.known-treatment-drug-container::-webkit-scrollbar-thumb:hover {
+  background: #88cc88; /* Lighter color on hover, for effect */
+}
+
+.drug-card-from-fever div:nth-child(1) {
+  background-color: rgb(215, 211, 211);
+  /* background-color:var(--lightBlueColor); */
+  width: 100%;
+  height: 25%;
+  margin: 2px;
+  box-sizing: border-box;
+}
+
+.drug-card-from-fever div:nth-child(2) {
+  background-color: rgb(215, 211, 211);
+  /* background-color:var(--lightBlueColor); */
+  width: 100%;
+  height: 25%;
+}
+.drug-card-from-fever div:nth-child(3) {
+  background-color: rgb(215, 211, 211);
+  /* background-color:var(--lightBlueColor); */
+  width: 100%;
+  height: 55%;
+}
+.tabDiv{
+  display: inline-flex;
+  gap: 0px;
+  padding: 5px 10px;
+  color: black;
+  background-color: #4caf50;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border-radius: 20px;
+}
+.normalTab{
+  padding: 10px;
+  border-radius: 20px;
+}
+.activeTab {
+  background-color: #BAFF39;
+  font-weight: bold;
+  
+}
