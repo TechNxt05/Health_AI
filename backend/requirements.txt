@@ -6,7 +6,7 @@ python-dotenv==1.0.1
 google-generativeai
 flask-socketio
 eventlet
-rdkit-pypi==2024.9.6
+rdkit==2024.9.6
 tensorflow==2.15.1
 torch==2.4.1
 open_clip_torch==2.23.0
