@@ -16,8 +16,8 @@ from utils.mongo_utils import db
 fs = gridfs.GridFS(db)
 
 app = Flask(__name__)
-CORS(app)
-socketio = SocketIO(app, cors_allowed_origins="*")
+CORS(app, origins=["https://healthai-frontend-o32c.onrender.com"])
+socketio = SocketIO(app, cors_allowed_origins="https://healthai-frontend-o32c.onrender.com")
 
 # Register blueprints
 app.register_blueprint(user_routes)

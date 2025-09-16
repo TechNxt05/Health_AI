@@ -1,31 +1,48 @@
 import { useState, useEffect, useContext } from "react";
 import DataContext from "../../context/dataContext";
 import axios from "axios";
-import { apiUrl } from "../../api"; // ✅ use helper
+import { apiUrl } from "../../api";
 
 function UserAppointment() {
-  const [appointments, setAppointments] = useState([]);
   const { user } = useContext(DataContext);
+  const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
 
-  const getAppointment = async () => {
-    if (!user?._id) return; // wait for user
+  const getAppointment = async (signal) => {
+    if (!user?._id) return;
     try {
-      const res = await axios.post(apiUrl("/appointments/user"), {
-        user_id: user._id,
-      });
+      setLoading(true);
+      setErr("");
+      const res = await axios.post(
+        apiUrl("/appointments/user"),
+        { user_id: user._id },
+        { signal } // axios supports AbortSignal in recent versions
+      );
       setAppointments(res?.data || []);
-    } catch (err) {
-      console.error(err);
+    } catch (e) {
+      if (axios.isCancel?.(e) || e?.name === "CanceledError") return;
+      console.error(e);
+      setErr("Failed to load appointments.");
+      setAppointments([]);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    getAppointment();
+    const controller = new AbortController();
+    getAppointment(controller.signal);
+    return () => controller.abort();
+    // re-run if user changes
   }, [user?._id]);
+
+  const canJoin = (appt) => Boolean(appt?.date); // adapt if you add status/meeting link
 
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Your Appointments</h2>
+
       <table className="w-full border-collapse border border-gray-300">
         <thead>
           <tr className="bg-white text-black">
@@ -36,6 +53,7 @@ function UserAppointment() {
             <th className="p-2">Actions</th>
           </tr>
         </thead>
+
         <tbody>
           {appointments.map((appointment) => (
             <tr key={appointment._id}>
@@ -51,20 +69,30 @@ function UserAppointment() {
               <td className="border border-gray-300 p-2 text-black">
                 {appointment.time}
               </td>
-              {appointment?.date && (
-                <td className="border border-gray-300 p-2 text-black">
-                  <button className="bg-blue-500 text-white px-2 py-1 rounded mr-2">
-                    Join
-                  </button>
-                </td>
-              )}
+              <td className="border border-gray-300 p-2 text-black">
+                <button
+                  className="bg-blue-500 text-white px-2 py-1 rounded mr-2 disabled:opacity-50"
+                  disabled={!canJoin(appointment)}
+                  onClick={() => {
+                    // TODO: navigate to meeting link when you add it
+                  }}
+                >
+                  Join
+                </button>
+              </td>
             </tr>
           ))}
 
-          {appointments.length === 0 && (
+          {(loading || err || appointments.length === 0) && (
             <tr>
               <td colSpan={5} className="text-center text-gray-500 p-4">
-                {user?._id ? "No appointments yet." : "Loading user…"}
+                {loading
+                  ? "Loading appointments…"
+                  : err
+                  ? err
+                  : user?._id
+                  ? "No appointments yet."
+                  : "Loading user…"}
               </td>
             </tr>
           )}
