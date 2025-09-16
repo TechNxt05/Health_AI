@@ -19,8 +19,8 @@ const AppointmentScheduler = ({getAppointment,appointment,setDisplayOverlay}) =>
     const formattedDateTime = `${date}T${time}`;
     try {
       setLoading(true);
-      const url="http://127.0.0.1:5000";
-      const response = await axios.put(`${url}/appointment/${appointment?._id}`, {
+      
+      const response = await axios.put(apiUrl(`/appointment/${appointment?._id}`), {
         date:date,
         time:time,
       });
