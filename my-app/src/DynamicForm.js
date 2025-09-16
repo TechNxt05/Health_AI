@@ -40,7 +40,7 @@ const DynamicForm = () => {
     // };
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/generate-dataset-from-description', {
+      const response = await fetch(apiUrl('/generate-dataset-from-description'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

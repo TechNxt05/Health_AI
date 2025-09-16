@@ -2,10 +2,15 @@ import React, { useEffect, useState } from 'react';
 import './DoctorChat.css';
 import { useLocation } from 'react-router-dom';
 import { io } from 'socket.io-client';
+import { SOCKET_URL, SOCKET_PATH } from './api';
 import { useCookies } from 'react-cookie';
 import VideoCall from './VideoCall';
 
-const socket = io('http://localhost:5000');
+const socket = io(SOCKET_URL || '/', {
+   path: SOCKET_PATH,
+   transports: ['websocket'],
+   withCredentials: false
+ });
 
 const DoctorChat = () => {
   const location = useLocation();

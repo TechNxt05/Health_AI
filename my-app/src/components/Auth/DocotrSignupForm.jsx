@@ -36,7 +36,7 @@ function DoctorSignupForm() {
 
     try {
       setLoading(true);
-      const response = await axios.post("http://127.0.0.1:5000/docter/register", {
+      const response = await axios.post(apiUrl("/docter/register"), {
         ...formData,
         accountType: "DOCTOR",
       });

@@ -47,7 +47,7 @@ function LoginForm(){
     try{ 
         console.log(formData)
         setLoading(true);
-        const response=await axios.post(`http://127.0.0.1:5000/${targetroute}/signin`,{"email":email,"password":password});
+        const response=axios.post(apiUrl(`/${targetroute}/signin`),{"email":email,"password":password});
         const cookieData=response?.data;
         handleSetCookie(cookieData);
         setUser(response?.data);

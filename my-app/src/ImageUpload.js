@@ -25,7 +25,7 @@ const ImageUpload = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post('http://127.0.0.1:5000/disease-from-image', formData, {
+      const response = await axios.post(apiUrl('/disease-from-image'), formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
