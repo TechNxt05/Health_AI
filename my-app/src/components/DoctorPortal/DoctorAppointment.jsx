@@ -3,49 +3,65 @@ import DataContext from "../../context/dataContext";
 import axios from "axios";
 import AppointmentScheduler from "./AppointmentScheduler";
 import { toast } from "react-hot-toast";
-import { apiUrl } from "../../api"; // ✅ use the helper
+import { apiUrl } from "../../api";
 
 function UserAppointment() {
   const { user } = useContext(DataContext);
   const [selectAppointment, setSelectAppointment] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [displayOverlay, setDisplayOverlay] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
 
-  const getAppointment = async () => {
-    if (!user?._id) return; // guard until user is ready
+  const auth = {}; // e.g. { headers: { Authorization: `Bearer ${token}` } }
+
+  const getAppointment = async (signal) => {
+    if (!user?._id) return;
     try {
+      setLoading(true);
+      setErr("");
       const res = await axios.post(
         apiUrl("/appointments/docter"),
-        { docter_id: user._id }
+        { docter_id: user._id },
+        { signal, ...auth }
       );
       setAppointments(res?.data || []);
-    } catch (err) {
-      console.error(err);
+    } catch (e) {
+      if (axios.isCancel?.(e) || e?.name === "CanceledError") return;
+      console.error(e);
+      setErr("Failed to load appointments");
       toast.error("Failed to load appointments");
+      setAppointments([]);
+    } finally {
+      setLoading(false);
     }
   };
 
   const deleteAppointment = async (id) => {
     try {
-      await axios.delete(apiUrl(`/appointment/${id}`));
+      await axios.delete(apiUrl(`/appointment/${id}`), auth);
       toast.success("Appointment deleted successfully!");
-      getAppointment();
-    } catch (err) {
-      console.error(err);
+      await getAppointment();
+    } catch (e) {
+      console.error(e);
       toast.error("Error deleting appointment");
     }
   };
 
   useEffect(() => {
-    getAppointment();
-  }, [user?._id]); // rerun when the logged-in user becomes available
+    const controller = new AbortController();
+    getAppointment(controller.signal);
+    return () => controller.abort();
+  }, [user?._id]); // refetch when user changes
+
+  const isActionDisabled = (a) => Boolean(a?.status && a.status !== "PENDING");
 
   return (
     <div className="relative">
       {displayOverlay && (
         <AppointmentScheduler
           appointment={selectAppointment}
-          getAppointment={getAppointment}
+          getAppointment={() => getAppointment()}
           setDisplayOverlay={setDisplayOverlay}
         />
       )}
@@ -71,27 +87,33 @@ function UserAppointment() {
               <td className="border border-gray-300 p-2 text-black">{a.time}</td>
               <td className="border border-gray-300 p-2 text-black">
                 <button
-                  className="bg-blue-500 text-white px-2 py-1 rounded mr-2"
-                  onClick={() => {
-                    setSelectAppointment(a);
-                    setDisplayOverlay(true);
-                  }}
+                  className="bg-blue-500 text-white px-2 py-1 rounded mr-2 disabled:opacity-50"
+                  onClick={() => { setSelectAppointment(a); setDisplayOverlay(true); }}
+                  disabled={isActionDisabled(a)}
                 >
                   Accept
                 </button>
                 <button
-                  className="bg-red-500 text-white px-2 py-1 rounded"
+                  className="bg-red-500 text-white px-2 py-1 rounded disabled:opacity-50"
                   onClick={() => deleteAppointment(a?._id)}
+                  disabled={isActionDisabled(a)}
                 >
                   Reject
                 </button>
               </td>
             </tr>
           ))}
-          {appointments.length === 0 && (
+
+          {(loading || err || appointments.length === 0) && (
             <tr>
               <td className="p-4 text-center text-gray-500" colSpan={5}>
-                {user?._id ? "No appointments yet." : "Loading user…"}
+                {loading
+                  ? "Loading…"
+                  : err
+                  ? err
+                  : user?._id
+                  ? "No appointments yet."
+                  : "Loading user…"}
               </td>
             </tr>
           )}

@@ -1,59 +1,121 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState, useRef } from "react";
+import axios from "axios";
+import { apiUrl } from "../../api";
 
 const MetricsDashboard = () => {
-  const [data, setdata] = useState(null);
+  const [data, setData] = useState(null); // { summary_statistics, missing_values, visualizations? }
   const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
+  const abortRef = useRef(null);
 
   const sendDataToBackend = async () => {
-    const dataset = {
+    const payload = {
       dataset: [
         { age: 24, gender: "male", heart_beat: 70, name: "Jon" },
-        { age: 22, gender: "female", heart_beat: 80, name: "Alice" }
-      ]
+        { age: 22, gender: "female", heart_beat: 80, name: "Alice" },
+      ],
     };
 
     try {
       setLoading(true);
-      const response = await axios.post('http://localhost:5000/metric-from-json', dataset);
-      console.log('Response from backend:', response.data);
-      setdata(response.data); // Store visualizations separately
-      console.log("data : ",data)
-    } catch (error) {
-      console.error('Error fetching metrics:', error);
+      setErr("");
+
+      const controller = new AbortController();
+      abortRef.current = controller;
+
+      const { data: res } = await axios.post(apiUrl("/metric-from-json"), payload, {
+        signal: controller.signal,
+        validateStatus: (s) => s >= 200 && s < 300, // only treat 2xx as success
+      });
+
+      setData(res);
+      console.log("Metrics response:", res);
+    } catch (e) {
+      if (e.name === "CanceledError") return; // aborted
+      console.error("Error fetching metrics:", e);
+      setErr(e?.response?.data?.message || "Failed to fetch metrics");
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  useEffect(() => {
+    return () => {
+      // cleanup on unmount
+      abortRef.current?.abort();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (data) console.log("Data updated:", data);
+  }, [data]);
 
   return (
-    <div>
-        <button onClick={()=>(console.log("clivk: ",data))}>click it</button>
-      <button onClick={sendDataToBackend}>Get Metrics</button>
-      {data && (
-        <div>
-          <h3>Summary Statistics</h3>
-          <pre>{JSON.stringify(data.summary_statistics)}</pre>
-          
-          <h3>Missing Values</h3>
-          <pre>{JSON.stringify(data.missing_values)}</pre>
+    <div className="p-4 space-y-4">
+      <div className="flex items-center gap-2">
+        <button
+          onClick={sendDataToBackend}
+          disabled={loading}
+          className="px-3 py-2 rounded bg-blue-600 text-white disabled:opacity-50"
+        >
+          {loading ? "Loading…" : "Get Metrics"}
+        </button>
+
+        <button
+          onClick={() => console.log("Current data:", data)}
+          className="px-3 py-2 rounded bg-gray-200"
+        >
+          Log current data
+        </button>
+      </div>
+
+      {!data && !loading && !err && (
+        <div className="text-gray-500">Click “Get Metrics” to fetch a sample analysis.</div>
+      )}
+
+      {err && (
+        <div className="p-3 rounded bg-red-50 text-red-700 border border-red-200">
+          {err}
         </div>
       )}
-      {/* {Object.keys(data.visualizations).length > 0 && (
-        <div>
-          <h3>Visualizations</h3>
-          {Object.entries(visualizations).map(([key, value]) => (
-            <div key={key}>
-              <h4>{key.replace(/_/g, ' ').toUpperCase()}</h4>
-              <img src={`data:image/png;base64,${value}`} alt={key} />
-            </div>
-          ))}
+
+      {data && (
+        <div className="space-y-6">
+          <section>
+            <h3 className="text-lg font-semibold mb-2">Summary Statistics</h3>
+            <pre className="bg-gray-100 p-3 rounded overflow-x-auto">
+              {JSON.stringify(data.summary_statistics ?? {}, null, 2)}
+            </pre>
+          </section>
+
+          <section>
+            <h3 className="text-lg font-semibold mb-2">Missing Values</h3>
+            <pre className="bg-gray-100 p-3 rounded overflow-x-auto">
+              {JSON.stringify(data.missing_values ?? {}, null, 2)}
+            </pre>
+          </section>
+
+          {data.visualizations && Object.keys(data.visualizations).length > 0 && (
+            <section>
+              <h3 className="text-lg font-semibold mb-4">Visualizations</h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                {Object.entries(data.visualizations).map(([key, base64]) => (
+                  <figure key={key} className="border rounded p-3">
+                    <figcaption className="mb-2 font-medium">
+                      {key.replace(/_/g, " ").toUpperCase()}
+                    </figcaption>
+                    <img
+                      src={`data:image/png;base64,${base64}`}
+                      alt={key}
+                      className="w-full h-auto"
+                    />
+                  </figure>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
-      )} */}
+      )}
     </div>
   );
 };

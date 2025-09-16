@@ -1,222 +1,164 @@
-import React, { useState } from 'react';
-import Papa from 'papaparse';
+import React, { useState } from "react";
+import Papa from "papaparse";
+import { apiUrl } from "../../api"; // ✅ import your env-aware helper
+
 const DynamicForm = () => {
-  const [fields, setFields] = useState([{ field: '', description: '' }]);
-  const [size, setSize] = useState(0);
-  const [loading, setLoading] = useState(false); // Loader state
-  const [dataset, setDataset] = useState(null); // State to store the dataset
-  const [downloadUrl, setDownloadUrl] = useState([]);
-  const [showDownBut, setDownloadButton] = useState(false);
-  // Add more fields
+  const [fields, setFields] = useState([{ field: "", description: "" }]);
+  const [size, setSize] = useState("");            // store as string in input
+  const [loading, setLoading] = useState(false);
+  const [dataset, setDataset] = useState(null);
+  const [downloadUrl, setDownloadUrl] = useState(null); // ✅ null initial
+  const [showDownBut, setShowDownBut] = useState(false);
+
   const handleAddMore = () => {
-    setFields([...fields, { field: '', description: '' }]);
+    setFields((prev) => [...prev, { field: "", description: "" }]);
   };
 
-  // Handle input change for fields
-  const handleInputChange = (index, event) => {
-    const values = [...fields];
-    values[index][event.target.name] = event.target.value;
-    setFields(values);
+  const handleInputChange = (index, e) => {
+    const copy = [...fields];
+    copy[index][e.target.name] = e.target.value;
+    setFields(copy);
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Show loader when API call starts
-    setDownloadButton(true);
-    const data = {
-      size: size,
-      fields: fields.map((item) => item.field),
-      descriptions: fields.map((item) => item.description),
+
+    // basic validation
+    const sizeNum = Number(size);
+    const nonEmpty = fields.filter(
+      (f) => f.field.trim().length > 0 && f.description.trim().length > 0
+    );
+
+    if (!Number.isFinite(sizeNum) || sizeNum <= 0) {
+      alert("Please enter a valid dataset size (> 0).");
+      return;
+    }
+    if (nonEmpty.length === 0) {
+      alert("Please add at least one field with a description.");
+      return;
+    }
+
+    setLoading(true);
+    setShowDownBut(false);
+    setDownloadUrl(null);
+
+    const payload = {
+      size: sizeNum,
+      fields: nonEmpty.map((f) => f.field.trim()),
+      descriptions: nonEmpty.map((f) => f.description.trim()),
     };
 
-    // const handleGenerateDataset = async () => {
-    //   setLoading(true);
-    //   const data = {
-    //     size: size,
-    //     fields: fields.map((item) => item.field),
-    //     descriptions: fields.map((item) => item.description),
-    //   }
-    // };
-
     try {
-      const response = await fetch(apiUrl('/generate-dataset-from-description'), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+      const res = await fetch(apiUrl("/generate-dataset-from-description"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
-      const result = await response.json();
-      console.log('Response from server:', result);
-
-      // Assuming the dataset is in result.dataset
-      if (result?.dataset) {
-        setDataset(result.dataset);
-        setDownloadButton(true);
-        // =====================
-        const csv = Papa.unparse(result.dataset); // Convert JSON to CSV using PapaParse
-        // Step 2: Create a Blob from the CSV data
-        const blob = new Blob([csv], { type: 'text/csv' });
-
-        // Step 3: Create a URL for the Blob and set it for download
-        const url = window.URL.createObjectURL(blob);
-        setDownloadUrl(url); // Save the Blob URL for the download
-        // =====================
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || `Request failed: ${res.status}`);
       }
-    } catch (error) {
-      console.error('Error submitting form:', error);
+
+      const result = await res.json();
+      if (result?.dataset && Array.isArray(result.dataset)) {
+        setDataset(result.dataset);
+
+        // Convert JSON -> CSV and prep download
+        const csv = Papa.unparse(result.dataset);
+        const blob = new Blob([csv], { type: "text/csv" });
+        const url = window.URL.createObjectURL(blob);
+        setDownloadUrl(url);
+        setShowDownBut(true);
+      } else {
+        throw new Error("No dataset returned by the server.");
+      }
+    } catch (err) {
+      console.error("Error submitting form:", err);
+      alert("Failed to generate dataset. Check console for details.");
     } finally {
-      setLoading(false); // Hide loader once API call completes
+      setLoading(false);
     }
   };
 
-  // const handleCalculateCovariance = async () => {
-  //   if (!dataset) return;
-  //   setLoading(true);
-
-  //   try {
-  //     const response = await fetch('http://127.0.0.1:5000/calculate-covariance', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ dataset }),
-  //     });
-
-  //     const result = await response.json();
-  //     if (result?.covariance_matrix) {
-  //       setCovarianceMatrix(result.covariance_matrix);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error calculating covariance matrix:', error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // const handleGenerateAccuracyGraph = async () => {
-  //   setLoading(true);
-
-  //   try {
-  //     const response = await fetch('http://127.0.0.1:5000/generate-accuracy-graph', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ dataset }), // If your accuracy graph depends on the dataset
-  //     });
-
-  //     const result = await response.json();
-  //     if (result?.accuracy_graph) {
-  //       setAccuracyData(result.accuracy_graph);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error generating accuracy graph:', error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // Function to download CSV
-  const downloadCSV = () => {
-    if (!dataset) return;
-
-    const csvRows = [];
-
-    // Create headers
-    const headers = ['Field', 'Description'];
-    csvRows.push(headers.join(','));
-
-    // Add rows from the dataset
-    dataset.forEach((row) => {
-      const values = [row.field, row.description];
-      csvRows.push(values.join(','));
-    });
-
-    // Convert to CSV format
-    const csvContent = `data:text/csv;charset=utf-8,${csvRows.join('\n')}`;
-
-    // Create download link
-    const link = document.createElement('a');
-    link.setAttribute('href', encodeURI(csvContent));
-    link.setAttribute('download', 'generated_dataset.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
   const downloadFile = () => {
-    const link = document.createElement('a');
+    if (!downloadUrl) return;
+    const link = document.createElement("a");
     link.href = downloadUrl;
-    link.setAttribute('download', 'processed_data.csv'); // Set filename
+    link.setAttribute("download", "generated_dataset.csv");
     document.body.appendChild(link);
     link.click();
-    link.parentNode.removeChild(link); // Clean up after the download
+    link.remove();
   };
+
   return (
     <div className="datasetGen">
       <div className="datasetfromdesc">
         <h2 className="datasetfromdeschead">Generate Data</h2>
 
-        {/* Size input */}
         <input
-          type="text"
+          type="number"
+          min={1}
           name="size"
           placeholder="Size"
-          value={size !== 0 ? size : ''}
-          onChange={(event) => setSize(event.target.value)}
+          value={size}
+          onChange={(e) => setSize(e.target.value)}
           className="sizeInputBox"
         />
 
-        {/* Form for dynamic fields */}
         <form onSubmit={handleSubmit} className="datasetgenform">
-          {fields.map((field, index) => (
-            <div key={index} className="datasetgeninput">
+          {fields.map((field, i) => (
+            <div key={i} className="datasetgeninput">
               <input
                 type="text"
                 name="field"
                 placeholder="Field"
                 value={field.field}
-                onChange={(event) => handleInputChange(index, event)}
+                onChange={(e) => handleInputChange(i, e)}
               />
               <input
                 type="text"
                 name="description"
                 placeholder="Description"
                 value={field.description}
-                onChange={(event) => handleInputChange(index, event)}
+                onChange={(e) => handleInputChange(i, e)}
               />
             </div>
           ))}
+
           <div className="buttons">
-            <button type="button" onClick={handleAddMore} className="addmorebutton">
+            <button
+              type="button"
+              onClick={handleAddMore}
+              className="addmorebutton"
+              disabled={loading}
+            >
               Add More
             </button>
-            <button type="submit" className="submitbutton">
-              Submit
+
+            <button type="submit" className="submitbutton" disabled={loading}>
+              {loading ? "Generating…" : "Submit"}
             </button>
-            {/* <button onClick={handleCalculateCovariance} className="covariancebutton">
-              Covariance Matrix
-            </button>
-            <button onClick={handleGenerateAccuracyGraph} className="accuracybutton">
-              Accuracy Graph
-            </button> */}
           </div>
         </form>
 
-        {/* Loader display */}
         {loading && <p>Loading...</p>}
 
-        {/* Download CSV button */}
         {downloadUrl && showDownBut && (
           <button
             onClick={downloadFile}
-            style={{ display: 'block', margin: '10px auto' }}
+            style={{ display: "block", margin: "10px auto" }}
             className="download-button-csv"
           >
             Download Processed CSV
           </button>
+        )}
+
+        {/* Optional: quick peek of the first few rows */}
+        {dataset && (
+          <pre style={{ marginTop: 16, maxHeight: 240, overflow: "auto" }}>
+            {JSON.stringify(dataset.slice(0, 5), null, 2)}
+          </pre>
         )}
       </div>
     </div>

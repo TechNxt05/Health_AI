@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import './DoctorChat.css';
 import { useLocation } from 'react-router-dom';
 import { io } from 'socket.io-client';
-import { SOCKET_URL, SOCKET_PATH } from './api';
+import { SOCKET_URL, SOCKET_PATH, apiUrl } from './api';
 import { useCookies } from 'react-cookie';
 import VideoCall from './VideoCall';
 
 const socket = io(SOCKET_URL || '/', {
-   path: SOCKET_PATH,
-   transports: ['websocket'],
-   withCredentials: false
- });
+  path: SOCKET_PATH,
+  transports: ['websocket'],
+  withCredentials: false,
+});
 
 const DoctorChat = () => {
   const location = useLocation();
@@ -30,9 +30,7 @@ const DoctorChat = () => {
     const fetchProfiles = async (url) => {
       try {
         const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error('Failed to fetch profiles');
-        }
+        if (!response.ok) throw new Error('Failed to fetch profiles');
         const data = await response.json();
         setDisplayProfiles(data);
       } catch (error) {
@@ -41,9 +39,9 @@ const DoctorChat = () => {
     };
 
     if (role === 'HEALTHSEAKER') {
-      fetchProfiles('http://127.0.0.1:5000/docters');
+      fetchProfiles(apiUrl('/docters'));
     } else {
-      fetchProfiles('http://127.0.0.1:5000/users');
+      fetchProfiles(apiUrl('/users'));
     }
   }, [role]);
 
@@ -52,24 +50,25 @@ const DoctorChat = () => {
     if (chatDoctor?._id) {
       socket.emit('join_room', {
         room: chatDoctor._id,
-        name: chatDoctor?.name || chatDoctor?.firstName,
+        name: currentUser,
       });
     }
 
     // Listen for incoming messages
     socket.on('message', (message) => {
-      console.log('message : ', message);
-      setMessages((prevMessages) => [...prevMessages, message]);
+      setMessages((prev) => [...prev, message]);
     });
 
     return () => {
-      socket.off('receiveMessage');
-      socket.emit('leave_room', {
-        room: chatDoctor._id,
-        name: chatDoctor?.name || chatDoctor?.firstName,
-      });
+      socket.off('message'); // ✅ cleanup correctly
+      if (chatDoctor?._id) {
+        socket.emit('leave_room', {
+          room: chatDoctor._id,
+          name: currentUser,
+        });
+      }
     };
-  }, [chatDoctor]);
+  }, [chatDoctor, currentUser]);
 
   const sendMessage = () => {
     if (newMessage.trim()) {
@@ -81,16 +80,14 @@ const DoctorChat = () => {
         time: new Date().toLocaleTimeString(),
       };
 
-      // Emit message to the room
-      socket.emit('sendMessage', messageData);
+      // ✅ must match backend event name
+      socket.emit('send_message', messageData);
 
-      // Update local state for the sender
-      setMessages((prevMessages) => [...prevMessages, messageData]);
+      // Update local state for sender
+      setMessages((prev) => [...prev, messageData]);
       setNewMessage('');
     }
   };
-
-  const toggleVideoCall = () => setShowVideoCall((prev) => !prev);
 
   return (
     <div className="chatMainComponent component-margin">
@@ -99,7 +96,9 @@ const DoctorChat = () => {
         {displayProfiles.map((prof, ind) => (
           <div
             key={ind}
-            className={`singleProfile ${chatDoctor?.email === prof?.email ? 'active' : ''}`}
+            className={`singleProfile ${
+              chatDoctor?._id === prof?._id ? 'active' : ''
+            }`}
             onClick={() => setChatDoctor(prof)}
           >
             <div className="chatDoctorImage">
@@ -124,9 +123,8 @@ const DoctorChat = () => {
         ))}
       </div>
 
-      {/* Right Section: Chat and Video Call */}
+      {/* Right Section: Chat + Video Call */}
       <div className="rightPart">
-        {/* Chat Header */}
         <div className="rightUpperPart">
           <div className="rightUpperPartLeft">
             <div className="rightUpperPartLeftImageDiv">
@@ -145,31 +143,25 @@ const DoctorChat = () => {
                   : 'No Name Available')}
             </div>
           </div>
-          <div className="videoCallIcon" onClick={toggleVideoCall}>
+          <div className="videoCallIcon" onClick={() => setShowVideoCall((prev) => !prev)}>
             <img src="videoCall.png" alt="Video Call Icon" />
           </div>
         </div>
 
-        {/* Chat Body */}
         <div className="rightLowerPart">
           {showVideoCall ? (
             <VideoCall />
           ) : (
             <div className="chatSection">
               <div className="chatMessages">
-                {messages.map((message, index) => (
-                  <div>
-                    {chatDoctor?.email === message.senderemail && (
-                      <div
-                        key={message.senderemail}
-                        className={`message ${
-                          message.sender === currentUser ? 'sent' : 'received'
-                        }`}
-                      >
-                        <strong>{message.sender}:</strong> {message.message}
-                        {/* <div className="timestamp">{message.time}</div> */}
-                      </div>
-                    )}
+                {messages.map((m, i) => (
+                  <div
+                    key={i}
+                    className={`message ${
+                      m.sender === currentUser ? 'sent' : 'received'
+                    }`}
+                  >
+                    <strong>{m.sender}:</strong> {m.message}
                   </div>
                 ))}
               </div>

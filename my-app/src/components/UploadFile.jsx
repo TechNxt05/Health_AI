@@ -1,187 +1,153 @@
-import React, { useRef, useState } from 'react';
-import Papa from 'papaparse';
-import axios from 'axios';
-import Loader from './Loader';
-import AddFileButton from './AddFileButton';
-import ImageDisplay from './SampleDataset';
-import TableForData from './TableForData';
-import Base64Loader from './Base64Loader';
-import { useTheme } from 'styled-components';
+import React, { useRef, useState } from "react";
+import Papa from "papaparse";
+import axios from "axios";
+import Loader from "./Loader";
+import AddFileButton from "./AddFileButton";
+import TableForData from "./TableForData";
+import Base64Loader from "./Base64Loader";
+import { apiUrl } from "../../api";
 
 const UploadFile = () => {
-  const [parsedData, setParsedData] = useState([]);
-  const [tableRows, setTableRows] = useState([]);
-  const [values, setValues] = useState([]);
-  const [rowsToProcess, setRowsToProcess] = useState('');
-  const [downloadUrl, setDownloadUrl] = useState(''); // State to store the download link
-  const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
+
+  const [parsedData, setParsedData] = useState([]);      // full CSV rows (array of objects)
+  const [tableRows, setTableRows] = useState([]);        // header array
+  const [values, setValues] = useState([]);              // rows for preview table
+  const [rowsToProcess, setRowsToProcess] = useState(""); // optional limit
+
+  const [downloadUrl, setDownloadUrl] = useState("");
+  const [loading, setLoading] = useState(false);
   const [isFileExist, setFileExist] = useState(false);
-  const [inputJsonData, setInputJsonData] = useState();
-  const [outputJsonData, setOutputJsonData] = useState();
-  const [outputImageVisualisation, setOutputImageVisualisation] = useState();
-  const [inputImageVisualisation, setInputImageVisualisation] = useState();
-  const [LoadThisComponent, setLoadThisComponent] = useState('inputtable');
 
-  const loaderHandler = (text) => {
-    setLoadThisComponent(text);
-  };
+  const [inputJsonData, setInputJsonData] = useState(null);
+  const [outputJsonData, setOutputJsonData] = useState(null);
 
-  const btnName = [
-    { name: 'Input table', path: '/input-table', dataSend: inputJsonData, text: 'table' },
-    { name: 'Output table', path: '/output-table', dataSend: outputJsonData, text: 'table' },
-    { name: 'Chart', path: '/output-table', dataSend: outputJsonData, text: 'image' },
+  const [inputImageVisualisation, setInputImageVisualisation] = useState(null);
+  const [outputImageVisualisation, setOutputImageVisualisation] = useState(null);
+
+  const [loadSection, setLoadSection] = useState("inputtable"); // 'table' | 'image'
+
+  const navButtons = [
+    { id: "input",  name: "Input table",  dataSend: inputJsonData,  kind: "table" },
+    { id: "output", name: "Output table", dataSend: outputJsonData, kind: "table" },
+    { id: "chart",  name: "Chart",        dataSend: outputJsonData, kind: "image" },
   ];
 
-  const handleCsvParsing = (jsonData, text) => {
-    if (text !== 'table') {
-      loaderHandler('image');
+  const handleCsvParsing = (jsonData, kind) => {
+    if (!jsonData || !Array.isArray(jsonData) || jsonData.length === 0) {
+      setTableRows([]);
+      setValues([]);
+      setLoadSection(kind === "image" ? "image" : "table");
       return;
     }
-    console.log('data come-> ', jsonData);
 
-    // Array to hold the ordered rows and values
-    const rowsArray = [];
-    const valuesArray = [];
+    if (kind !== "table") {
+      setLoadSection("image");
+      return;
+    }
 
-    // Loop through each row in the JSON data
-    jsonData.forEach((row, index) => {
-      rowsArray.push({ index: index, keys: Object.keys(row) }); // Include index to maintain order
-      valuesArray.push({ index: index, values: Object.values(row) }); // Include index to maintain order
-    });
+    // headers from first row, values for preview (max 15)
+    const headers = Object.keys(jsonData[0]);
+    const previewRows = jsonData.slice(0, 15).map((row) => headers.map((h) => row[h] ?? ""));
 
-    // Sort rows and values by their index to ensure order
-    rowsArray.sort((a, b) => a.index - b.index);
-    valuesArray.sort((a, b) => a.index - b.index);
-
-    // Extract the actual rows and values without the index
-    const orderedRows = rowsArray.map((row) => row.keys);
-    const orderedValues = valuesArray.map((value) => value.values);
-
-    setTableRows(orderedRows[0]); // Set the first row as headers
-    setValues(orderedValues.slice(0, 15)); // Limit the values to the first 15 rows
-    loaderHandler(text);
+    setTableRows(headers);
+    setValues(previewRows);
+    setLoadSection("table");
   };
 
-  const fetchMetricVisualisationForData = async (JsonData) => {
-    const sampleData = {
-      dataset: JsonData,
-    };
-    console.log(sampleData);
-    const url = 'http://127.0.0.1:5000/metric-from-json';
-    const response = await fetch(url, {
-      method: 'POST', // HTTP method
-      headers: {
-        'Content-Type': 'application/json', // Specify the content type
-      },
-      body: JSON.stringify(sampleData), // Convert sampleData to JSON and send it in the body
+  const fetchMetricVisualisationForData = async (jsonArray) => {
+    const payload = { dataset: jsonArray };
+    const res = await fetch(apiUrl("/metric-from-json"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
     });
-    const result = await response.json();
-    // Extract all the keys
-    console.log('analysis result', result.visualizations);
-    // const keys = Object.keys(result.visualizations);
-    return result.visualizations;
+    const data = await res.json();
+    return data?.visualizations || null;
   };
 
-  const changeHandler = (event) => {
-    Papa.parse(event.target.files[0], {
+  const onFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
-      complete: function (results) {
-        const rowsArray = [];
-        const valuesArray = [];
+      complete: ({ data }) => {
+        const rows = Array.isArray(data) ? data.filter((r) => Object.keys(r).length) : [];
+        setParsedData(rows);
 
-        results.data.forEach((d, index) => {
-          rowsArray.push({ index: index, keys: Object.keys(d) });
-          valuesArray.push({ index: index, values: Object.values(d) });
-        });
-
-        // Sort rows and values by their index to ensure order
-        rowsArray.sort((a, b) => a.index - b.index);
-        valuesArray.sort((a, b) => a.index - b.index);
-
-        // Extract the actual rows and values without the index
-        const orderedRows = rowsArray.map((row) => row.keys);
-        const orderedValues = valuesArray.map((value) => value.values);
-
-        setParsedData(results.data); // Full parsed data
-        setTableRows(orderedRows[0]); // Set the headers (column names)
-        setValues(orderedValues); // Set the table values
+        if (rows.length) {
+          const headers = Object.keys(rows[0]);
+          const vals = rows.slice(0, 15).map((row) => headers.map((h) => row[h] ?? ""));
+          setTableRows(headers);
+          setValues(vals);
+        } else {
+          setTableRows([]);
+          setValues([]);
+        }
       },
     });
   };
-  const rowChangeHandler = (event) => {
-    setRowsToProcess(event.target.value); // Store the number of rows to process
-  };
-  const handleSubmit = async () => {
-    const formattedData = {
-      size: rowsToProcess, // Total number of rows
-      sample: parsedData.slice(0, parsedData.length), // Limit rows if specified
-    };
 
-    setInputJsonData(formattedData.sample); // Set input data (maybe a typo, should be setInputJsonData?)
+  const handleSubmit = async () => {
+    if (!parsedData.length) return;
+
+    // rowsToProcess is optional; if provided, coerce to positive int
+    const n = Number.parseInt(rowsToProcess, 10);
+    const sample = Number.isFinite(n) && n > 0 ? parsedData.slice(0, n) : parsedData;
+
+    setInputJsonData(sample);
+    setLoading(true);
+    setDownloadUrl("");
+    setFileExist(false);
 
     try {
-      console.log('Fetching visualization for input data...');
+      // input vis
+      const inputVis = await fetchMetricVisualisationForData(sample);
+      setInputImageVisualisation(inputVis);
 
-      // Fetch the visualization for the input data
-      const inputData = await fetchMetricVisualisationForData(formattedData.sample);
+      // generate dataset from sample
+      const { data } = await axios.post(apiUrl("/generate-dataset-from-sample"), {
+        size: sample.length,
+        sample,
+      });
 
-      // Set the input image visualization
-      setInputImageVisualisation(inputData); // Assuming setInputImageVisualisation takes input data as an argument
+      const out = data?.dataset || [];
+      setOutputJsonData(out);
 
-      // Sending JSON data to backend via axios
-      setLoading(true);
+      // output vis
+      const outputVis = await fetchMetricVisualisationForData(out);
+      setOutputImageVisualisation(outputVis);
 
-      const response = await axios.post(
-        'http://127.0.0.1:5000/generate-dataset-from-sample',
-        formattedData,
-      );
-      console.log(response.data.dataset); // Assuming response.data contains the JSON object
-
-      // Step 1: Convert response JSON to CSV
-      const outputJsonData = response.data.dataset;
-      setOutputJsonData(outputJsonData); // Set output data for further use
-
-      // Fetch the visualization for the output data
-      console.log('Fetching visualization for output data...');
-      const outputResponse = await fetchMetricVisualisationForData(outputJsonData);
-
-      // Set the output image visualization
-      setOutputImageVisualisation(outputResponse); // Assuming setOutputImageVisualisation takes output data as an argument
-
-      // Convert output JSON to CSV using PapaParse
-      const csv = Papa.unparse(outputJsonData);
-
-      // Step 2: Create a Blob from the CSV data
-      const blob = new Blob([csv], { type: 'text/csv' });
-
-      // Step 3: Create a URL for the Blob and set it for download
-      const url = window.URL.createObjectURL(blob);
-      setDownloadUrl(url); // Save the Blob URL for the download
+      // build CSV for download
+      const csv = Papa.unparse(out);
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      setDownloadUrl(url);
       setFileExist(true);
-      loaderHandler('image');
-    } catch (error) {
-      console.error('There was an error!', error);
+
+      // show charts by default after generation
+      setLoadSection("image");
+    } catch (err) {
+      console.error("Generation error:", err);
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
-  // Function to download the CSV file
   const downloadFile = () => {
-    const link = document.createElement('a');
-    link.href = downloadUrl;
-    link.setAttribute('download', 'processed_data.csv'); // Set filename
-    document.body.appendChild(link);
-    link.click();
-    link.parentNode.removeChild(link); // Clean up after the download
+    if (!downloadUrl) return;
+    const a = document.createElement("a");
+    a.href = downloadUrl;
+    a.setAttribute("download", "processed_data.csv");
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
   };
 
-  const [loadComponent, setLoadComponent] = useState('input-table');
   return (
     <div className="upload-csv-container component-margin">
-      {/* File Uploader */}
       <div className="file-upload-container">
         <span className="simple-heading">Choose file to generate data</span>
         <AddFileButton fileInputRef={fileInputRef} />
@@ -189,136 +155,86 @@ const UploadFile = () => {
           ref={fileInputRef}
           type="file"
           name="file"
-          onChange={changeHandler}
           accept=".csv"
-          style={{ display: 'none', margin: '10px auto' }}
+          onChange={onFileChange}
+          style={{ display: "none", margin: "10px auto" }}
         />
-        {/* Input field for number of rows */}
-        {/* <input
-          className="size-input-of-dataset"
-          type="number"
-          placeholder="Enter number of rows to process"
-          value={rowsToProcess}
-          onChange={rowChangeHandler}
-          style={{ display: 'block', margin: '10px auto' }}
-        /> */}
+
         <div className="input-container">
           <input
-            placeholder="Enter number of rows to process"
+            id="rows-to-process"
+            placeholder="Enter number of rows to process (optional)"
             className="input-field"
-            type="text"
+            type="number"
+            min={1}
             value={rowsToProcess}
-            onChange={rowChangeHandler}
+            onChange={(e) => setRowsToProcess(e.target.value)}
           />
-          <label for="input-field" className="input-label">
+          <label htmlFor="rows-to-process" className="input-label">
             Enter number of rows to process
           </label>
           <span className="input-highlight"></span>
         </div>
-        {/* Button to submit and call API */}
 
         <div className="flex gap-2 items-center">
-          {/* {loading && <Loader></Loader>} */}
-          <button className="generate-btn" onClick={handleSubmit}>
-            <svg
-              height="24"
-              width="24"
-              fill="#FFFFFF"
-              viewBox="0 0 24 24"
-              data-name="Layer 1"
-              id="Layer_1"
-              className="sparkle"
-            >
+          <button className="generate-btn" onClick={handleSubmit} disabled={loading || !parsedData.length}>
+            <svg height="24" width="24" fill="#FFFFFF" viewBox="0 0 24 24" className="sparkle">
               <path d="M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z"></path>
             </svg>
-
-            <span className="text">{loading ? 'Generating...' : 'Generate'}</span>
+            <span className="text">{loading ? "Generating..." : "Generate"}</span>
           </button>
         </div>
 
-        {/* Display the download button if the downloadUrl is available */}
-        {/* /* From Uiverse.io by satyamchaudharydev */}
-
-        {/* <div class="download-btn" data-tooltip="Size: 20Mb">
-          <div class="button-wrapper">
-            <div class="text">Download</div>
-            <span class="icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-                role="img"
-                width="2em"
-                height="2em"
-                preserveAspectRatio="xMidYMid meet"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 0 0 4.561 21h14.878a2 2 0 0 0 1.94-1.515L22 17"
-                ></path>
-              </svg>
-            </span>
-          </div>
-        </div> */}
-
-        {/* {downloadUrl && ( */}
         <button
-          disabled={isFileExist == false}
+          disabled={!isFileExist}
           onClick={downloadFile}
-          style={{ display: 'block', margin: '10px auto' }}
+          style={{ display: "block", margin: "10px auto" }}
           className="download-button"
         >
           Download CSV
         </button>
-        {/* )} */}
       </div>
 
       <div className="image-container">
         <div className="data-analysis-section">
-          {btnName.map((element) => {
-            return (
-              <button
-                className="btn-for-different-section"
-                onClick={() => {
-                  handleCsvParsing(element.dataSend, element.text);
-                }}
-              >
-                {element.name}
-              </button>
-            );
-          })}
+          {navButtons.map((b) => (
+            <button
+              key={b.id}
+              className="btn-for-different-section"
+              onClick={() => handleCsvParsing(b.dataSend, b.kind)}
+            >
+              {b.name}
+            </button>
+          ))}
           {loading && (
-            <div div className="loader_div">
-              <Loader></Loader>
+            <div className="loader_div">
+              <Loader />
             </div>
           )}
-          {/* <button onClick={()=>{}}>{Chart}</button> */}
         </div>
-        {LoadThisComponent == 'table' && (
-          <TableForData tableRows={tableRows} values={values}></TableForData>
+
+        {loadSection === "table" && (
+          <TableForData tableRows={tableRows} values={values} />
         )}
-        {LoadThisComponent == 'image' && (
+
+        {loadSection === "image" && (
           <div className="analysis-container-image">
             <div className="input-graph-box">
               {inputImageVisualisation &&
                 Object.keys(inputImageVisualisation).map((key) => (
-                  <>
+                  <div key={`in-${key}`} className="mb-4">
                     <p>{key}</p>
                     <Base64Loader imageBase64={inputImageVisualisation[key]} />
-                  </>
+                  </div>
                 ))}
             </div>
             <div className="output-graph-box">
               {outputImageVisualisation &&
                 Object.keys(outputImageVisualisation).map((key) => (
-                  <>
+                  <div key={`out-${key}`} className="mb-4">
                     <p>{key}</p>
                     <Base64Loader imageBase64={outputImageVisualisation[key]} />
-                  </>
+                  </div>
                 ))}
             </div>
           </div>
