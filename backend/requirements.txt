@@ -13,12 +13,12 @@ open_clip_torch==2.23.0
 pandas==2.2.3
 matplotlib==3.9.2
 Pillow==11.0.0
-protobuf==5.28.3
+protobuf==4.25.3
 Requests==2.32.3
 langchain==0.3.4
 langchain_community==0.3.3
 langchain_google_genai==2.0.1
 dockstring==0.3.2
 seaborn==0.13.2
-numpy
+numpy==1.26.4
 bcrypt
