@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Papa from "papaparse";
-import { apiUrl } from "../../api"; // ✅ import your env-aware helper
+import { apiUrl } from "./api"; // ✅ import your env-aware helper
 
 const DynamicForm = () => {
   const [fields, setFields] = useState([{ field: "", description: "" }]);

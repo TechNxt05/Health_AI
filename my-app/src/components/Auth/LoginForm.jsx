@@ -7,7 +7,7 @@ import DataContext from "../../context/dataContext";
 import Loader from "../Loader";
 import Tab from "./Tab";
 import { toast } from "react-hot-toast";
-import { apiUrl } from "../api"; // ✅ lives in src/api.js
+import { apiUrl } from "../../api"; // ✅ lives in src/api.js
 
 function LoginForm() {
   const { user, setUser } = useContext(DataContext);

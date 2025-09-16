@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { apiUrl } from "../api"; // src/api.js
+import { apiUrl } from "../../api";// src/api.js
 
 function GeneralUserSignupForm() {
   const [formData, setFormData] = useState({

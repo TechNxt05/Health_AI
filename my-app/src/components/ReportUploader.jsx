@@ -3,7 +3,7 @@ import axios from "axios";
 import "../ImageUpload.css";
 import ReactMarkdown from "react-markdown";
 import { jsPDF } from "jspdf";
-import { apiUrl } from "../../api"; // ✅ use env-aware base URL
+import { apiUrl } from "../api";// ✅ use env-aware base URL
 
 const ImageUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
