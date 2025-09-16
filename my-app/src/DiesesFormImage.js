@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./ImageUpload.css";
 // adjust the path if this file isn't next to api.js
-import { apiUrl } from "../../api";
+import { apiUrl } from "./api";
 
 const ImageUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);

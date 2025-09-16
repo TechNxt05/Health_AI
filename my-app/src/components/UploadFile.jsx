@@ -5,7 +5,7 @@ import Loader from "./Loader";
 import AddFileButton from "./AddFileButton";
 import TableForData from "./TableForData";
 import Base64Loader from "./Base64Loader";
-import { apiUrl } from "../../api";
+import { apiUrl } from "../api";
 
 const UploadFile = () => {
   const fileInputRef = useRef(null);

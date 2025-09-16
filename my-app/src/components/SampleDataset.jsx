@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { apiUrl } from "../../api";
+import { apiUrl } from "../api";
 
 const MetricsDashboard = () => {
   const [data, setData] = useState(null); // { summary_statistics, missing_values, visualizations? }

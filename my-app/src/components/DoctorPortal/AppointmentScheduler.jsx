@@ -3,6 +3,7 @@ import axios from "axios";
 import { ImCross } from "react-icons/im";
 import Loader from "../Loader";
 import {toast} from 'react-hot-toast'
+import { apiUrl } from "../../api";
 const AppointmentScheduler = ({getAppointment,appointment,setDisplayOverlay}) => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");

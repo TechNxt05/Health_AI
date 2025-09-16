@@ -6,7 +6,7 @@ import DiagnosisReport from './DiagonsisReport';
 import TreatmentPlan from './TreatmentPlan';
 import Loader from './Loader';
 import './TimeLine.css';
-import { API_BASE, apiUrl } from "../../api"; 
+import { API_BASE, apiUrl } from "../api"; 
 // Timeline component
 const Timeline = ({ activeStep, setActiveStep }) => {
   const stages = [

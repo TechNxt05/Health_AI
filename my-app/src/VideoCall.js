@@ -27,7 +27,7 @@ const LiveStream = () => {
       sharedLinks: [
         {
           name: 'Copy Link',
-          url: 'http://localhost:3000/doctor-chat/',
+          url: `${window.location.origin}/doctor-chat/${roomID}`,
         },
       ],
       scenario: {

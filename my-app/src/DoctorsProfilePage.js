@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./DoctorProfilePage.css";
 import IndividualDoctorProfile from "./IndividualDoctorProfile";
 import { useCookies } from "react-cookie";
-import { apiUrl } from "../../api"; // <-- likely correct path
+import { apiUrl } from "./api"; // <-- likely correct path
 
 const DoctorsProfilePage = () => {
   const [cookies] = useCookies(["medgenai"]);

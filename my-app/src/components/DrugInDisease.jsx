@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Loader from "./Loader";
-import { apiUrl } from "../../api";
+import { apiUrl } from "../api";
 
 const DrugInDisease = () => {
   const [inputData, setInputData] = useState("");

@@ -3,7 +3,7 @@ import "./IndividualDoctorProfile.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { apiUrl } from "../../api"; // ← adjust if needed
+import { apiUrl } from "./api"; // ← adjust if needed
 
 const IndividualDoctorProfile = ({ profile, user, setLoading }) => {
   const navigate = useNavigate();
