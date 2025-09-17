@@ -6,11 +6,12 @@ import { SOCKET_URL, SOCKET_PATH, apiUrl } from './api';
 import { useCookies } from 'react-cookie';
 import VideoCall from './VideoCall';
 
-const socket = io(SOCKET_URL || '/', {
+
+const socket = io(SOCKET_URL, {
   path: SOCKET_PATH,
-  transports: ['websocket'],
-  withCredentials: false,
+  transports: ["websocket", "polling"],
 });
+
 
 const DoctorChat = () => {
   const location = useLocation();
