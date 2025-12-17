@@ -175,8 +175,27 @@ def drug_from_smiles():
     return jsonify(result), 200
 
 def drug_from_disease():
-    disease = request.json.get('disease')
-    result = gen_ai_json(disease, prompts=drug_from_disease_prompt)
-    result = json.loads(result)
-    return jsonify(result), 200
+    try:
+        disease = request.json.get('disease')
+        if not disease:
+            return jsonify({'error': 'Disease name is required'}), 400
+            
+        print(f"Generating drugs for disease: {disease}")
+        result = gen_ai_json(disease, prompts=drug_from_disease_prompt)
+        
+        # Verify result before parsing
+        if not result:
+            print("Gemini returned empty response")
+            return jsonify({'error': 'AI generation failed - empty response'}), 500
+
+        result = json.loads(result)
+        return jsonify(result), 200
+    except Exception as e:
+        error_str = str(e)
+        print(f"Error in drug_from_disease: {error_str}")
+        
+        if "429" in error_str:
+            return jsonify({'error': 'Rate limit exceeded (Quota full). Please wait ~30 seconds and try again.'}), 429
+            
+        return jsonify({'error': error_str}), 500
 

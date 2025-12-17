@@ -22,7 +22,7 @@ const IndividualDoctorProfile = ({ profile, user, setLoading }) => {
       setLoading?.(true);
       const payload = {
         user_id: user._id,
-        docter_id: profile._id, // backend expects 'docter_id'
+        doctor_id: profile._id, // backend expects 'doctor_id'
         user_name: user.firstName,
         user_email: user.email,
         doctor_name: profile.name,

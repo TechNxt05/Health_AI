@@ -1,13 +1,13 @@
-import { useState} from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Tab from "./Tab";
 import GeneralUserSignupForm from "./GeneralUserSignupForm";
 import DoctorAppointment from "../DoctorPortal/DoctorAppointment";
-import DoctorSignupForm from "./DocotrSignupForm";
+import DoctorSignupForm from "./DoctorSignupForm";
 function SignupForm() {
   const navigate = useNavigate();
   const [accountType, setAccountType] = useState("HEALTHSEAKER");
-  const [loading,setLoading]=useState(false);
+  const [loading, setLoading] = useState(false);
   const tabData = [
     {
       id: 1,
@@ -21,7 +21,7 @@ function SignupForm() {
     },
   ];
 
- 
+
 
   return (
     <div
@@ -33,9 +33,8 @@ function SignupForm() {
     >
       {loading && (<Loader></Loader>)}
       <Tab tabData={tabData} accountType={accountType} setAccountType={setAccountType} />
-      {accountType=="HEALTHSEAKER" && (<GeneralUserSignupForm></GeneralUserSignupForm>)}
-      {accountType=="DOCTOR" && (<DoctorSignupForm></DoctorSignupForm>)}
-      
+      {accountType == "HEALTHSEAKER" && (<GeneralUserSignupForm></GeneralUserSignupForm>)}
+      {accountType == "DOCTOR" && (<DoctorSignupForm></DoctorSignupForm>)}
     </div>
   );
 }

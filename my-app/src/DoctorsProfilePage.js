@@ -27,11 +27,12 @@ const DoctorsProfilePage = () => {
       setLoading(true);
       setErr("");
       try {
-        const res = await fetch(apiUrl("/docters"));
+        const res = await fetch(apiUrl("/doctors"));
         if (!res.ok) throw new Error("Failed to fetch doctor profiles");
         const data = await res.json();
         setDisplayObject(Array.isArray(data) ? data : []);
       } catch (e) {
+        console.error("Error fetching doctor profiles:", e);
         setErr(e.message || "Error fetching doctor profiles");
         setDisplayObject([]);
       } finally {

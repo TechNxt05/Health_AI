@@ -39,7 +39,7 @@ function LoginForm() {
 
   async function handleOnSubmit(e) {
     e.preventDefault();
-    const targetroute = accountType === "HEALTHSEAKER" ? "user" : "docter";
+    const targetroute = accountType === "HEALTHSEAKER" ? "user" : "doctor";
     try {
       setLoading(true);
       const res = await axios.post(

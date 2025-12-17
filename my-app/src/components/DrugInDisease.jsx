@@ -24,13 +24,22 @@ const DrugInDisease = () => {
       });
       if (!res.ok) {
         const text = await res.text();
-        throw new Error(text || `Request failed with ${res.status}`);
+        let errorMessage = text;
+        try {
+          const errorJson = JSON.parse(text);
+          if (errorJson && errorJson.error) {
+            errorMessage = errorJson.error;
+          }
+        } catch (e) {
+          // response was not JSON, stick with text
+        }
+        throw new Error(errorMessage || `Request failed with ${res.status}`);
       }
       const json = await res.json();
       setDrugData(json);
     } catch (err) {
       console.error(err);
-      alert("Failed to fetch drug suggestions. Please try again.");
+      alert(err.message || "Failed to fetch drug suggestions. Please try again.");
     } finally {
       setLoading(false);
     }

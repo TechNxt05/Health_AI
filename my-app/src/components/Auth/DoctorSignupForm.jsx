@@ -61,7 +61,7 @@ function DoctorSignupForm() {
 
     try {
       setLoading(true);
-      const { data } = await axios.post(apiUrl("/docter/register"), payload, {
+      const { data } = await axios.post(apiUrl("/doctor/register"), payload, {
         headers: { "Content-Type": "application/json" },
       });
 
@@ -103,7 +103,7 @@ function DoctorSignupForm() {
           value={formData.name}
           onChange={handleOnChange}
           placeholder="Name"
-          className="bg-[#b2dded] text-black text-lg rounded-[0.5rem] w-full p-[12px] border-2 border-[#999999]"
+          className="auth-input"
         />
 
         <input
@@ -113,7 +113,7 @@ function DoctorSignupForm() {
           value={formData.email}
           onChange={handleOnChange}
           placeholder="Email Address"
-          className="bg-[#b2dded] text-black text-lg rounded-[0.5rem] w-full p-[12px] border-2 border-[#999999]"
+          className="auth-input"
         />
 
         <input
@@ -123,7 +123,7 @@ function DoctorSignupForm() {
           value={formData.password}
           onChange={handleOnChange}
           placeholder="Password"
-          className="bg-[#b2dded] text-black text-lg rounded-[0.5rem] w-full p-[12px] border-2 border-[#999999]"
+          className="auth-input"
         />
 
         <select
@@ -131,7 +131,7 @@ function DoctorSignupForm() {
           name="field"
           value={formData.field}
           onChange={handleOnChange}
-          className="bg-[#b2dded] text-black text-lg rounded-[0.5rem] w-full p-[12px] border-2 border-[#999999]"
+          className="auth-input"
         >
           <option value="" disabled>
             Select Specialization
@@ -152,7 +152,7 @@ function DoctorSignupForm() {
           value={formData.consultation_fee}
           onChange={handleOnChange}
           placeholder="Appointment Price"
-          className="bg-[#b2dded] text-black text-lg rounded-[0.5rem] w-full p-[12px] border-2 border-[#999999]"
+          className="auth-input"
         />
 
         <input
@@ -162,7 +162,7 @@ function DoctorSignupForm() {
           value={formData.address}
           onChange={handleOnChange}
           placeholder="Address"
-          className="bg-[#b2dded] text-black text-lg rounded-[0.5rem] w-full p-[12px] border-2 border-[#999999]"
+          className="auth-input"
         />
 
         <input
@@ -172,7 +172,7 @@ function DoctorSignupForm() {
           value={formData.mobile}
           onChange={handleOnChange}
           placeholder="Mobile Number"
-          className="bg-[#b2dded] text-black text-lg rounded-[0.5rem] w-full p-[12px] border-2 border-[#999999]"
+          className="auth-input"
         />
 
         <textarea
@@ -181,7 +181,8 @@ function DoctorSignupForm() {
           value={formData.description}
           onChange={handleOnChange}
           placeholder="Description"
-          className="bg-[#b2dded] text-black text-lg rounded-[0.5rem] w-full p-[12px] border-2 border-[#999999]"
+          className="auth-input"
+          rows="3"
         />
 
         <button

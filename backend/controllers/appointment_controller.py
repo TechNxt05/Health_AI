@@ -37,9 +37,9 @@ def delete_appointment(id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-def get_docters_all_appointments():
-    docter_id = request.json['docter_id']
-    appointments = list(appointment_db.find({"docter_id": docter_id}))
+def get_doctors_all_appointments():
+    doctor_id = request.json['doctor_id']
+    appointments = list(appointment_db.find({"doctor_id": doctor_id}))
     for appointment in appointments:
         appointment['_id'] = str(appointment['_id'])
     return jsonify(appointments), 200
@@ -49,9 +49,9 @@ def get_users_all_appointments():
     appointments = list(appointment_db.find({"user_id": user_id}))
     for appointment in appointments:
         appointment['_id'] = str(appointment['_id'])
-        docter = db['docter'].find_one({"_id": ObjectId(appointment['docter_id'])})
-        if docter:
-            docter['_id'] = str(docter['_id'])
-            del docter['password']
-            appointment['docter'] = docter
+        doctor = db['doctor'].find_one({"_id": ObjectId(appointment['doctor_id'])})
+        if doctor:
+            doctor['_id'] = str(doctor['_id'])
+            del doctor['password']
+            appointment['doctor'] = doctor
     return jsonify(appointments), 200

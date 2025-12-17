@@ -9,7 +9,7 @@ import VideoCall from './VideoCall';
 
 const socket = io(SOCKET_URL, {
   path: SOCKET_PATH,
-  transports: ["websocket", "polling"],
+  transports: ["polling"], // Force polling for stability with Flask dev server
 });
 
 
@@ -40,7 +40,7 @@ const DoctorChat = () => {
     };
 
     if (role === 'HEALTHSEAKER') {
-      fetchProfiles(apiUrl('/docters'));
+      fetchProfiles(apiUrl('/doctors'));
     } else {
       fetchProfiles(apiUrl('/users'));
     }
@@ -97,9 +97,8 @@ const DoctorChat = () => {
         {displayProfiles.map((prof, ind) => (
           <div
             key={ind}
-            className={`singleProfile ${
-              chatDoctor?._id === prof?._id ? 'active' : ''
-            }`}
+            className={`singleProfile ${chatDoctor?._id === prof?._id ? 'active' : ''
+              }`}
             onClick={() => setChatDoctor(prof)}
           >
             <div className="chatDoctorImage">
@@ -158,9 +157,8 @@ const DoctorChat = () => {
                 {messages.map((m, i) => (
                   <div
                     key={i}
-                    className={`message ${
-                      m.sender === currentUser ? 'sent' : 'received'
-                    }`}
+                    className={`message ${m.sender === currentUser ? 'sent' : 'received'
+                      }`}
                   >
                     <strong>{m.sender}:</strong> {m.message}
                   </div>

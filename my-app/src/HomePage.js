@@ -30,15 +30,15 @@ const HomePage = () => {
         <div className="homepage-background-image">
           <div className="description">
             <h3>
-              <span className="Homepageheading">MEDGEN AI: </span>
+              <span className="Homepageheading">HEALTHAI: </span>
               <TypeAnimation
-                sequence={['Chat Your Cure', 3000, '']}
+                sequence={['Your Personal Health Assistant', 3000, '']}
                 repeat={Infinity}
-                // omitDeletionAnimation={true}
+              // omitDeletionAnimation={true}
               ></TypeAnimation>
             </h3>
             <p>
-              MedGen AI uses cutting-edge AI to provide personalized medical insights from genetic
+              HealthAI uses cutting-edge AI to provide personalized medical insights from genetic
               data, helping patients and doctors make smarter, data-driven decisions for better
               health outcomes.
             </p>

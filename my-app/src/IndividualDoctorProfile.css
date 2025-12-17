@@ -1,98 +1,116 @@
 .individual-doctor-profile {
-  width: 400px;
-  margin-right: 1%;
-  box-shadow: 0 0 5px #333;
-  border-radius: 10px;
-  opacity: 0.9;
+  width: 100%;
+  max-width: 380px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Ensure flex alignment from top to bottom */
-  padding-bottom: 20px; /* Add some padding at the bottom */
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
 .individual-doctor-profile:hover {
-  opacity: 1;
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  border-color: var(--greenColor);
 }
 
 .upper {
   display: flex;
   align-items: center;
   padding: 20px;
-  padding-bottom: 0px;
+  background: linear-gradient(to right, rgba(240, 244, 255, 0.5), transparent);
 }
 
 .imageContainer {
   flex-shrink: 0;
-  width: 120px;
-  height: 120px;
-  overflow: hidden;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  margin-right: 20px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin-right: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 3px solid white;
 }
 
 .imageContainer img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 50%;
 }
 
 .name {
-  font-size: 24px;
-  color: #283779;
+  font-size: 1.25rem;
+  color: var(--blueColor);
   font-weight: 700;
+  line-height: 1.2;
 }
 
 .field {
-  font-size: 18px;
-  color: #05c37d;
+  font-size: 0.9rem;
+  color: var(--greenColor);
   font-weight: 600;
+  margin-bottom: 4px;
 }
 
 .fee {
-  background-color: darkblue;
-  padding: 2px 6px;
-  border-radius: 5px;
-  width: 180px;
+  background-color: var(--blueColor);
+  padding: 4px 10px;
+  border-radius: 20px;
   color: white;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.8rem;
+  display: inline-block;
+  margin-top: 5px;
 }
 
 .mobema {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 5px;
+}
+
+.lower {
+  padding: 0 20px 20px;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  column-gap: 5px;
-  color: #333333f5;
 }
 
 .talknow {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  flex-grow: 1; /* Makes sure this section takes up available space */
 }
 
 .desc {
-  column-gap: 5px;
-  margin: 0 5px;
-  margin-bottom: 10px;
-  flex-grow: 1; /* Ensure that description grows to fill space if needed */
+  font-size: 0.9rem;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #e2e8f0;
 }
 
 .talknowbutton {
-  padding: 8px 12px;
-  font-size: 14px;
-  background-color: #05c37d;
+  width: 100%;
+  padding: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background-color: var(--greenColor);
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
-  text-align: center;
-  margin: 0 50px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.3);
 }
 
 .talknowbutton:hover {
-  background-color: #04a16c;
+  background-color: #0284c7;
+  /* Darker blue/teal */
+  transform: translateY(-1px);
 }

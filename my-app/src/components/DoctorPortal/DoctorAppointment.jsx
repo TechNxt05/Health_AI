@@ -21,8 +21,8 @@ function UserAppointment() {
       setLoading(true);
       setErr("");
       const res = await axios.post(
-        apiUrl("/appointments/docter"),
-        { docter_id: user._id },
+        apiUrl("/appointments/doctor"),
+        { doctor_id: user._id },
         { signal, ...auth }
       );
       setAppointments(res?.data || []);
@@ -110,10 +110,10 @@ function UserAppointment() {
                 {loading
                   ? "Loading…"
                   : err
-                  ? err
-                  : user?._id
-                  ? "No appointments yet."
-                  : "Loading user…"}
+                    ? err
+                    : user?._id
+                      ? "No appointments yet."
+                      : "Loading user…"}
               </td>
             </tr>
           )}

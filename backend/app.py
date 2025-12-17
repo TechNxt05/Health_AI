@@ -1,6 +1,5 @@
-# app.py
-import eventlet
-eventlet.monkey_patch()  # must be first!
+# import eventlet
+# eventlet.monkey_patch()  # must be first!
 
 import os
 import gridfs
@@ -11,13 +10,29 @@ from flask_socketio import SocketIO, join_room, leave_room, emit
 
 from routes.user_routes import user_routes
 from routes.ai_routes import ai_routes
-from routes.docter_routes import docter_routes
+from routes.doctor_routes import doctor_routes
 from routes.appointment_routes import appointment_routes
 from utils.mongo_utils import db
 
 # --- Config ---
 FRONTEND_URL = os.getenv("FRONTEND_URL", "https://healthai-frontend-o32c.onrender.com")
-ALLOWED_ORIGINS = [FRONTEND_URL, "http://localhost:5173", "http://localhost:3000"]
+ALLOWED_ORIGINS = [
+    FRONTEND_URL,
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://localhost:3002",
+    "http://localhost:3003",
+    "http://localhost:3004",
+    "http://localhost:3005",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
+    "http://127.0.0.1:3002",
+    "http://127.0.0.1:3003",
+    "http://127.0.0.1:3004",
+    "http://127.0.0.1:3005"
+]
 
 # --- App / CORS / Socket.IO ---
 app = Flask(__name__)
@@ -29,7 +44,7 @@ CORS(
 socketio = SocketIO(
     app,
     cors_allowed_origins=ALLOWED_ORIGINS,
-    async_mode="eventlet",
+    async_mode="threading", 
     ping_interval=25,
     ping_timeout=60,
 )
@@ -40,7 +55,7 @@ fs = gridfs.GridFS(db)
 # --- Blueprints ---
 app.register_blueprint(user_routes)
 app.register_blueprint(ai_routes)
-app.register_blueprint(docter_routes)
+app.register_blueprint(doctor_routes)
 app.register_blueprint(appointment_routes)
 
 # --- Health check ---
@@ -104,4 +119,4 @@ def handle_send_message(data):
 # --- Local dev entrypoint (Render uses gunicorn) ---
 if __name__ == "__main__":
     port = int(os.getenv("PORT", "5000"))
-    socketio.run(app, host="0.0.0.0", port=port, debug=True)
+    socketio.run(app, host="0.0.0.0", port=port, debug=True, use_reloader=False)

@@ -78,7 +78,7 @@ function GeneralUserSignupForm() {
             value={firstName}
             onChange={handleOnChange}
             placeholder="First Name"
-            className="bg-[#b2dded] text-black text-lg rounded-[0.5rem] w-full p-[12px] border-2 border-[#999999]"
+            className="auth-input"
           />
           <input
             required
@@ -87,7 +87,7 @@ function GeneralUserSignupForm() {
             value={lastName}
             onChange={handleOnChange}
             placeholder="Last Name"
-            className="bg-[#b2dded] text-black text-lg rounded-[0.5rem] w-full p-[12px] border-2 border-[#999999]"
+            className="auth-input"
           />
         </div>
 
@@ -98,7 +98,7 @@ function GeneralUserSignupForm() {
           value={email}
           onChange={handleOnChange}
           placeholder="Email Address"
-          className="bg-[#b2dded] text-black text-lg rounded-[0.5rem] w-full p-[12px] border-2 border-[#999999]"
+          className="auth-input"
         />
 
         <div className="flex space-x-4">
@@ -109,7 +109,7 @@ function GeneralUserSignupForm() {
             value={password}
             onChange={handleOnChange}
             placeholder="Password"
-            className="bg-[#b2dded] text-black text-lg rounded-[0.5rem] w-full p-[12px] border-2 border-[#999999]"
+            className="auth-input"
           />
           <input
             required
@@ -118,7 +118,7 @@ function GeneralUserSignupForm() {
             value={confirmPassword}
             onChange={handleOnChange}
             placeholder="Confirm Password"
-            className="bg-[#b2dded] text-black text-lg rounded-[0.5rem] w-full p-[12px] border-2 border-[#999999]"
+            className="auth-input"
           />
         </div>
 

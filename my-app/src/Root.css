@@ -40,26 +40,27 @@
 }
 
 /* From Uiverse.io by SteveBloX */
+/* From Uiverse.io by SteveBloX */
 .card {
   box-sizing: border-box;
   width: 190px;
-  background: rgba(217, 217, 217, 0.58);
-  border: 1px solid white;
-  box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(12px);
   border-radius: 17px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.5s;
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   user-select: none;
-  font-weight: bolder;
-  color: black;
-  padding: 10px 0px;
+  font-weight: 700;
+  color: var(--blueColor);
+  padding: 15px;
 }
 
 .card:hover {
