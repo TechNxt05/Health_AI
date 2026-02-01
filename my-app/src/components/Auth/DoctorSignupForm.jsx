@@ -93,7 +93,7 @@ function DoctorSignupForm() {
 
   return (
     <div className="p-6 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-4">Signup as Doctor</h2>
+      <h2 className="text-2xl font-bold mb-4 text-slate-200">Signup as Doctor</h2>
 
       <form onSubmit={handleOnSubmit} className="space-y-4">
         <input
@@ -103,7 +103,7 @@ function DoctorSignupForm() {
           value={formData.name}
           onChange={handleOnChange}
           placeholder="Name"
-          className="auth-input"
+          className="auth-input text-white placeholder:text-slate-400"
         />
 
         <input
@@ -113,7 +113,7 @@ function DoctorSignupForm() {
           value={formData.email}
           onChange={handleOnChange}
           placeholder="Email Address"
-          className="auth-input"
+          className="auth-input text-white placeholder:text-slate-400"
         />
 
         <input
@@ -123,7 +123,7 @@ function DoctorSignupForm() {
           value={formData.password}
           onChange={handleOnChange}
           placeholder="Password"
-          className="auth-input"
+          className="auth-input text-white placeholder:text-slate-400"
         />
 
         <select
@@ -131,13 +131,13 @@ function DoctorSignupForm() {
           name="field"
           value={formData.field}
           onChange={handleOnChange}
-          className="auth-input"
+          className="auth-input text-white bg-slate-800"
         >
-          <option value="" disabled>
+          <option value="" disabled className="text-slate-400">
             Select Specialization
           </option>
           {specializations.map((spec) => (
-            <option key={spec} value={spec}>
+            <option key={spec} value={spec} className="bg-slate-800 text-white">
               {spec}
             </option>
           ))}
@@ -152,7 +152,7 @@ function DoctorSignupForm() {
           value={formData.consultation_fee}
           onChange={handleOnChange}
           placeholder="Appointment Price"
-          className="auth-input"
+          className="auth-input text-white placeholder:text-slate-400"
         />
 
         <input
@@ -162,7 +162,7 @@ function DoctorSignupForm() {
           value={formData.address}
           onChange={handleOnChange}
           placeholder="Address"
-          className="auth-input"
+          className="auth-input text-white placeholder:text-slate-400"
         />
 
         <input
@@ -172,7 +172,7 @@ function DoctorSignupForm() {
           value={formData.mobile}
           onChange={handleOnChange}
           placeholder="Mobile Number"
-          className="auth-input"
+          className="auth-input text-white placeholder:text-slate-400"
         />
 
         <textarea
@@ -181,14 +181,14 @@ function DoctorSignupForm() {
           value={formData.description}
           onChange={handleOnChange}
           placeholder="Description"
-          className="auth-input"
+          className="auth-input text-white placeholder:text-slate-400"
           rows="3"
         />
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 disabled:opacity-60"
+          className="w-full bg-cyan-600 text-white p-2 rounded hover:bg-cyan-500 disabled:opacity-60 transition-colors font-semibold"
         >
           {loading ? "Creating Account..." : "Signup"}
         </button>

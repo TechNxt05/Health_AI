@@ -68,7 +68,7 @@ function GeneralUserSignupForm() {
 
   return (
     <div className="p-6 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-4">Signup as Health Seeker</h2>
+      <h2 className="text-2xl font-bold mb-4 text-slate-200">Signup as Health Seeker</h2>
       <form onSubmit={handleOnSubmit} className="space-y-4">
         <div className="flex space-x-4">
           <input
@@ -78,7 +78,7 @@ function GeneralUserSignupForm() {
             value={firstName}
             onChange={handleOnChange}
             placeholder="First Name"
-            className="auth-input"
+            className="auth-input text-white placeholder:text-slate-400"
           />
           <input
             required
@@ -87,7 +87,7 @@ function GeneralUserSignupForm() {
             value={lastName}
             onChange={handleOnChange}
             placeholder="Last Name"
-            className="auth-input"
+            className="auth-input text-white placeholder:text-slate-400"
           />
         </div>
 
@@ -98,7 +98,7 @@ function GeneralUserSignupForm() {
           value={email}
           onChange={handleOnChange}
           placeholder="Email Address"
-          className="auth-input"
+          className="auth-input text-white placeholder:text-slate-400"
         />
 
         <div className="flex space-x-4">
@@ -109,7 +109,7 @@ function GeneralUserSignupForm() {
             value={password}
             onChange={handleOnChange}
             placeholder="Password"
-            className="auth-input"
+            className="auth-input text-white placeholder:text-slate-400"
           />
           <input
             required
@@ -118,13 +118,13 @@ function GeneralUserSignupForm() {
             value={confirmPassword}
             onChange={handleOnChange}
             placeholder="Confirm Password"
-            className="auth-input"
+            className="auth-input text-white placeholder:text-slate-400"
           />
         </div>
 
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 disabled:opacity-60"
+          className="w-full bg-cyan-600 text-white p-2 rounded hover:bg-cyan-500 disabled:opacity-60 transition-colors font-semibold"
           disabled={loading}
         >
           {loading ? "Creating Account..." : "Signup"}

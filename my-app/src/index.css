@@ -18,27 +18,27 @@
   --bg-secondary: #0f172a;
   /* Slate 900 - Components */
 
-  --text-primary: #f8fafc;
-  /* Slate 50 - Main Text */
-  --text-secondary: #cbd5e1;
-  /* Slate 300 - Subtitles */
+  --text-primary: #ffffff;
+  /* Pure White - Maximum Contrast */
+  --text-secondary: #e2e8f0;
+  /* Slate 200 - High Visibility Subtitles */
 
-  --accent-color: #38bdf8;
-  /* Sky 400 - Primary Brand */
-  --accent-glow: rgba(56, 189, 248, 0.5);
+  --accent-color: #06b6d4;
+  /* Cyan 500 - High Contrast Brand Color */
+  --accent-glow: rgba(6, 182, 212, 0.6);
 
   --greenColor: #10b981;
   /* Emerald 500 - Success/Action */
   --blueColor: #3b82f6;
   /* Blue 500 */
-  --lightBlueColor: #0f172a;
-  /* Re-mapped to Dark for legacy support */
+  --lightBlueColor: #020617;
+  /* Re-mapped to Deep Dark */
 
-  /* Dark Glassmorphism */
-  --glass-bg: rgba(15, 23, 42, 0.65);
-  /* Dark transparent */
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  /* High Contrast Dark Glassmorphism */
+  --glass-bg: rgba(2, 6, 23, 0.85);
+  /* Darker & More Opaque for Readability */
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.7);
 
   --marginNavBar: 80px;
 }

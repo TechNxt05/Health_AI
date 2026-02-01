@@ -75,7 +75,7 @@ function LoginForm() {
 
       <form onSubmit={handleOnSubmit} className="flex flex-col w-full gap-y-4 mt-6">
         <label className="w-full">
-          <p className="text-[0.875rem] text-slate-800 font-bold mb-1 leading-[1.375rem]">
+          <p className="text-[0.875rem] text-slate-200 font-bold mb-1 leading-[1.375rem]">
             Email Address <sup className="text-pink-500">*</sup>
           </p>
           <input
@@ -85,12 +85,12 @@ function LoginForm() {
             onChange={handleOnChange}
             placeholder="Enter email address"
             name="email"
-            className="bg-white/50 text-slate-900 text-lg rounded-xl w-full p-3 border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
+            className="bg-slate-800/50 text-white text-lg rounded-xl w-full p-3 border border-slate-600 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-200/50 outline-none transition-all placeholder:text-slate-400"
           />
         </label>
 
         <label className="relative">
-          <p className="text-[0.875rem] text-slate-800 font-bold mb-1 leading-[1.375rem]">
+          <p className="text-[0.875rem] text-slate-200 font-bold mb-1 leading-[1.375rem]">
             Password <sup className="text-pink-500">*</sup>
           </p>
           <input
@@ -100,7 +100,7 @@ function LoginForm() {
             onChange={handleOnChange}
             placeholder="Enter Password"
             name="password"
-            className="bg-white/50 text-slate-900 text-lg rounded-xl w-full p-3 border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
+            className="bg-slate-800/50 text-white text-lg rounded-xl w-full p-3 border border-slate-600 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-200/50 outline-none transition-all placeholder:text-slate-400"
           />
           <span
             className="absolute right-3 top-[38px] cursor-pointer text-slate-500 hover:text-indigo-600 transition-colors"
