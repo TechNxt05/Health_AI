@@ -47,39 +47,39 @@ function ResponsiveAppBar() {
 
   return (
     <div className={`navbar ${isScrolled ? 'scrolled' : ''}`} style={{
-      background: isScrolled ? 'rgba(255, 255, 255, 0.85)' : 'transparent',
+      background: isScrolled ? 'var(--glass-bg)' : 'transparent',
       backdropFilter: isScrolled ? 'blur(12px)' : 'none',
-      borderBottom: isScrolled ? '1px solid rgba(255, 255, 255, 0.3)' : 'none',
+      borderBottom: isScrolled ? '1px solid var(--glass-border)' : 'none',
       transition: 'all 0.3s ease-in-out'
     }}>
-      <div className="logo" style={{ color: isScrolled ? '#1e293b' : 'white', textShadow: isScrolled ? 'none' : '0 2px 4px rgba(0,0,0,0.3)' }}>HEALTHAI</div>
+      <div className="logo" style={{ color: 'var(--text-primary)', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>HEALTHAI</div>
       <div className="links">
         <ul className="ulLinks">
           <li className="linkItem">
-            <a href="/" style={{ color: isScrolled ? '#334155' : 'white' }}>Home</a>
+            <a href="/" style={{ color: 'var(--text-primary)' }}>Home</a>
           </li>
           <li className="linkItem">
-            <a href="/chatbot" style={{ color: isScrolled ? '#334155' : 'white' }}>Chat Bot</a>
+            <a href="/chatbot" style={{ color: 'var(--text-primary)' }}>Chat Bot</a>
           </li>
           <li className="linkItem">
-            <a href="/diagonsis" style={{ color: isScrolled ? '#334155' : 'white' }}>Disease Diagnosis</a>
+            <a href="/diagonsis" style={{ color: 'var(--text-primary)' }}>Disease Diagnosis</a>
           </li>
-          <li className="linkItem" onClick={() => handleMenuClick(analyseImage)} style={{ color: isScrolled ? '#334155' : 'white' }}>
+          <li className="linkItem" onClick={() => handleMenuClick(analyseImage)} style={{ color: 'var(--text-primary)' }}>
             Image Analysis
           </li>
-          <li className="linkItem" onClick={() => handleMenuClick(dataset)} style={{ color: isScrolled ? '#334155' : 'white' }}>
+          <li className="linkItem" onClick={() => handleMenuClick(dataset)} style={{ color: 'var(--text-primary)' }}>
             Dataset Generation
           </li>
           {showPopUp && <PopUp onClose={() => setShowPopUp(false)} data={popUpData} />}{' '}
           {/* Pass popUpData to PopUp */}
           <li className="linkItem">
-            <a href="/doctors-profile" style={{ color: isScrolled ? '#334155' : 'white' }}>Connect with Doctor</a>
+            <a href="/doctors-profile" style={{ color: 'var(--text-primary)' }}>Connect with Doctor</a>
           </li>
           <li className="linkItem">
-            <a href="/druggeneration" style={{ color: isScrolled ? '#334155' : 'white' }}>Drug Generation From Smiles</a>
+            <a href="/druggeneration" style={{ color: 'var(--text-primary)' }}>Drug Generation From Smiles</a>
           </li>
           <li className="linkItem">
-            <a href="/druggenerationfromdisease" style={{ color: isScrolled ? '#334155' : 'white' }}>Drug Generation From Disease</a>
+            <a href="/druggenerationfromdisease" style={{ color: 'var(--text-primary)' }}>Drug Generation From Disease</a>
           </li>
         </ul>
       </div>
