@@ -63,10 +63,10 @@ function LoginForm() {
 
   return (
     <div
-      className="relative bg-cover bg-center text-center p-6 rounded-lg shadow-lg"
+      className="relative p-8 rounded-2xl shadow-2xl backdrop-blur-md border border-white/20"
       style={{
-        backgroundImage:
-          "url('https://img.rawpixel.com/s3afs-private/rawpixel_images/website_content/v996-026-kroiri0r.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=4577c6079475aabe21bb30ef2ce85b71')",
+        background: "var(--glass-bg)",
+        boxShadow: "var(--glass-shadow)"
       }}
     >
       {loading && <Loader />}
@@ -75,8 +75,8 @@ function LoginForm() {
 
       <form onSubmit={handleOnSubmit} className="flex flex-col w-full gap-y-4 mt-6">
         <label className="w-full">
-          <p className="text-[0.875rem] text-black font-bold mb-1 leading-[1.375rem]">
-            Email Address <sup className="text-pink-200">*</sup>
+          <p className="text-[0.875rem] text-slate-800 font-bold mb-1 leading-[1.375rem]">
+            Email Address <sup className="text-pink-500">*</sup>
           </p>
           <input
             required
@@ -85,14 +85,13 @@ function LoginForm() {
             onChange={handleOnChange}
             placeholder="Enter email address"
             name="email"
-            style={{ boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)" }}
-            className="bg-[#b2dded] text-black text-lg rounded-[0.5rem] w-full p-[12px] border-2 border-[#999999]"
+            className="bg-white/50 text-slate-900 text-lg rounded-xl w-full p-3 border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
           />
         </label>
 
         <label className="relative">
-          <p className="text-[0.875rem] text-black font-bold mb-1 leading-[1.375rem]">
-            Password <sup className="text-pink-200">*</sup>
+          <p className="text-[0.875rem] text-slate-800 font-bold mb-1 leading-[1.375rem]">
+            Password <sup className="text-pink-500">*</sup>
           </p>
           <input
             required
@@ -101,32 +100,31 @@ function LoginForm() {
             onChange={handleOnChange}
             placeholder="Enter Password"
             name="password"
-            style={{ boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)" }}
-            className="bg-[#b2dded] text-black text-lg rounded-[0.5rem] w-full p-[12px] border-2 border-[#999999]"
+            className="bg-white/50 text-slate-900 text-lg rounded-xl w-full p-3 border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
           />
           <span
-            className="absolute right-3 top-[38px] cursor-pointer"
+            className="absolute right-3 top-[38px] cursor-pointer text-slate-500 hover:text-indigo-600 transition-colors"
             onClick={() => setShowPassword((prev) => !prev)}
           >
             {showPassword ? (
-              <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
+              <AiOutlineEyeInvisible fontSize={24} />
             ) : (
-              <AiOutlineEye fontSize={24} fill="#AFB2BF" />
+              <AiOutlineEye fontSize={24} />
             )}
           </span>
 
           <Link to="/forgot-password">
-            <p className="text-xs mt-1 text-[rgba(18,83,191,1)] font-bold max-w-max ml-auto">
+            <p className="text-xs mt-1 text-indigo-600 font-bold max-w-max ml-auto hover:text-indigo-800">
               Forgot Password
             </p>
           </Link>
         </label>
 
-        <div className="flex gap-2 justify-center mt-2">
-          <button type="button" onClick={() => { setAccountType("HEALTHSEAKER"); setFormData({ email: "demo@patient.com", password: "password123" }); }} className="text-xs bg-blue-100 p-2 rounded text-blue-800 hover:bg-blue-200">
+        <div className="flex gap-3 justify-center mt-2">
+          <button type="button" onClick={() => { setAccountType("HEALTHSEAKER"); setFormData({ email: "demo@patient.com", password: "password123" }); }} className="text-xs bg-blue-50 p-2 rounded-lg text-blue-700 hover:bg-blue-100 border border-blue-200 transition-colors">
             Demo Patient
           </button>
-          <button type="button" onClick={() => { setAccountType("DOCTOR"); setFormData({ email: "demo@doctor.com", password: "password123" }); }} className="text-xs bg-green-100 p-2 rounded text-green-800 hover:bg-green-200">
+          <button type="button" onClick={() => { setAccountType("DOCTOR"); setFormData({ email: "demo@doctor.com", password: "password123" }); }} className="text-xs bg-green-50 p-2 rounded-lg text-green-700 hover:bg-green-100 border border-green-200 transition-colors">
             Demo Doctor
           </button>
         </div>
@@ -134,7 +132,7 @@ function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          className="bg-[#4caf50] rounded-[8px] font-bold text-richblack-900 px-[12px] py-[8px] mt-6 disabled:opacity-60"
+          className="btn w-full mt-6 flex justify-center items-center py-3"
         >
           {loading ? "Signing in..." : "Sign In"}
         </button>

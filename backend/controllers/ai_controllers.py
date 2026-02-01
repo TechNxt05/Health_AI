@@ -99,17 +99,21 @@ def mental_prediction():
 from flask import request, jsonify
 
 def chat_with_image():
-    message = request.form.get('message')
-    image = request.files.get('image')
+    try:
+        message = request.form.get('message')
+        image = request.files.get('image')
 
-    if image:
-        image_data = image.read()
-        mime_type = image.mimetype
-        print(f"Received image: {image.filename} with mime type: {mime_type}")
-        result = gen_ai_image(message, image_data, mime_type, prompts=['Analyze given images and user queries and answer them carefully.'])
-        return jsonify({"data": result}), 200
-    else:
-        return jsonify({"error": "Image not provided"}), 400
+        if image:
+            image_data = image.read()
+            mime_type = image.mimetype
+            print(f"Received image: {image.filename} with mime type: {mime_type}")
+            result = gen_ai_image(message, image_data, mime_type, prompts=['Analyze given images and user queries and answer them carefully.'])
+            return jsonify({"data": result}), 200
+        else:
+            return jsonify({"error": "Image not provided"}), 400
+    except Exception as e:
+        print(f"Error in chat_with_image: {e}")
+        return jsonify({"error": str(e)}), 500
 
 def class_of_image(image_data, mime_type):
     parts = [
@@ -120,29 +124,7 @@ def class_of_image(image_data, mime_type):
     print(type(result), " , result: ", result)
     return result['class']
 
-# def predict_disease_from_image():
-#     image = request.files.get('image')
-
-#     if image:
-#         image_data = image.read()
-#         mime_type = image.mimetype
-#         print(f"Received image: {image.filename} with mime type: {mime_type}")
-#         image_class = class_of_image(image_data, mime_type)
-#         disease_report_prompt = ["You are a medical expert. you will be given an image of x-ray or some skin disease. you will also be given predicted disease result from our local model. you have to create a detailed structured report with disease at the top followed by detailed analysis."]
-
-#         if image_class == "other":
-#             result = gen_ai_image('', image_data, mime_type, prompts=disease_from_image_prompt)
-#         elif image_class == "skin":
-#             predicted_class, confidence_score = predict_skin(image_data)
-#             result = gen_ai_image(f'local model reslut : "disease" : {predicted_class}, "confidence_score": {confidence_score}.', image_data, mime_type, prompts=disease_report_prompt)
-#         elif image_class == "xray":
-#             predicted_class, confidence_score = predict_xray(image_data)
-#             result = gen_ai_image(f'local model reslut : "disease" : {predicted_class}, "confidence_score": {confidence_score}.', image_data, mime_type, prompts=disease_report_prompt)
-        
-#         return jsonify({"data": result}), 200
-#     else:
-#         return jsonify({"error": "Image not provided"}), 400
-    
+# ... (omitted commented out code) ...
 
 def predict_disease_from_image():
     image = request.files.get('image')
@@ -161,16 +143,20 @@ def predict_disease_from_image():
         return jsonify({"error": "Image not provided"}), 400
     
 def extract_med_from_image():
-    image = request.files.get('image')
+    try:
+        image = request.files.get('image')
 
-    if image:
-        image_data = image.read()
-        mime_type = image.mimetype
-        print(f"Received image: {image.filename} with mime type: {mime_type}")
-        result = gen_ai_image('', image_data, mime_type, prompts=extract_from_image_prompt)
-        return jsonify({"data": result}), 200
-    else:
-        return jsonify({"error": "Image not provided"}), 400
+        if image:
+            image_data = image.read()
+            mime_type = image.mimetype
+            print(f"Received image: {image.filename} with mime type: {mime_type}")
+            result = gen_ai_image('', image_data, mime_type, prompts=extract_from_image_prompt)
+            return jsonify({"data": result}), 200
+        else:
+            return jsonify({"error": "Image not provided"}), 400
+    except Exception as e:
+        print(f"Error in extract_med_from_image: {e}")
+        return jsonify({"error": str(e)}), 500
 
 def drug_from_smiles():
     smile = request.json.get('smiles')
