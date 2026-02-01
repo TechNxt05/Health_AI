@@ -4,157 +4,119 @@
   color: var(--blueColor);
 }
 
+/* Modern HomePage Styles */
 .homePage {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  background-color: white;
-  /* margin-bottom: 100px; */
-  /* position: relative; */
+  background-color: var(--lightBlueColor);
+  min-height: 100vh;
 }
 
 .homepage-background-image {
   position: absolute;
   width: 100%;
-  min-height: 100%;
+  height: 100vh;
+  /* Fixed height for hero */
   top: 0;
   left: 0;
   background-size: cover;
   background-position: center;
-  overflow: hidden;
-  will-change: transform, opacity, filter;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  background-repeat: no-repeat;
-  z-index: 100;
+  z-index: 0;
   background-image: url(https://technext.github.io/live-doc/v1.0.0/assets/img/gallery/hero-bg.png);
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-around;
+  /* Add overlay for better text contrast */
+  box-shadow: inset 0 0 0 1000px rgba(15, 23, 42, 0.4);
 }
 
+/* Chatbot Floating Button */
 .homepageChatBot {
-  width: 65px;
-  height: 65px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  background-color: #05c37d;
+  background: linear-gradient(135deg, #10b981, #059669);
   cursor: pointer;
   position: fixed;
-  right: 20px;
+  right: 30px;
+  bottom: 30px;
   z-index: 1000;
-  bottom: 100px;
+  box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.5);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .homepageChatBot:hover {
-  background-color: #09f467da;
+  transform: scale(1.1) rotate(5deg);
 }
 
+.homepageChatBot img {
+  width: 35px;
+  height: 35px;
+  filter: brightness(0) invert(1);
+}
+
+/* Hero Section Description */
 .description {
   display: flex;
   flex-direction: column;
   z-index: 1;
-  width: 40%;
+  width: 45%;
+  padding-left: 5%;
 }
 
 .description h3 {
   color: white;
-  font-size: 32px;
+  font-size: 3.5rem;
+  /* Larger, bolder text */
   font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .description h3 .Homepageheading {
-  color: #05c37d;
-}
-
-.moving-text {
-  color: white;
+  color: #38bdf8;
+  /* Sky blue accent */
+  background: linear-gradient(to right, #38bdf8, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .description p {
-  color: #283779;
-  font-size: 16px;
-  font-weight: 600;
+  color: #e2e8f0;
+  /* Slate 200 */
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.6;
+  max-width: 600px;
 }
 
-.videoFile {
-  width: 450px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px #333;
-  overflow: hidden;
-}
-
+/* Glassmorphism Card Container */
 .cardCompnent {
+  /* Keeping class name for JS compatibility */
   width: 90%;
-  background-color: white;
+  max-width: 1200px;
   position: relative;
-  top: -100px;
-  border-radius: 10px;
-  box-shadow: 0 0 8px #33333393;
-  padding: 20px 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
+  top: -80px;
+  /* Overlap effect */
+  z-index: 10;
 
-.imageComponent {
-  width: 90%;
-  height: 90vh;
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-  /* display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center; */
-}
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
 
-.heading {
-  position: absolute;
-  top: 15%;
-  left: 5%;
-  font-size: 62px;
-  font-weight: 900;
-  color: white;
-  text-shadow: 0 0 10px #333;
-}
+  border-radius: 24px;
+  padding: 3rem;
 
-.imageComponent img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-.homePagePara {
-  position: absolute;
-  width: 30%;
-  top: 30%;
-  left: 5%;
-  color: rgba(128, 128, 128, 0.744);
-  display: inline-block;
-}
-
-.chatButton {
-  position: absolute;
-  top: 10%;
-  right: 20%;
-  z-index: 5;
-}
-
-.navigateButtons {
-  padding: 5px 20px;
-  background-color: rgb(153, 23, 235);
-  border-radius: 30px;
-  font-size: 32px;
-  color: greenyellow;
-  font-weight: 700;
-  box-shadow: 0 0 10px #333;
-  cursor: pointer;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
 }
 
 .datasetGen {

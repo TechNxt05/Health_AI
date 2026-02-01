@@ -122,6 +122,15 @@ function LoginForm() {
           </Link>
         </label>
 
+        <div className="flex gap-2 justify-center mt-2">
+          <button type="button" onClick={() => { setAccountType("HEALTHSEAKER"); setFormData({ email: "demo@patient.com", password: "password123" }); }} className="text-xs bg-blue-100 p-2 rounded text-blue-800 hover:bg-blue-200">
+            Demo Patient
+          </button>
+          <button type="button" onClick={() => { setAccountType("DOCTOR"); setFormData({ email: "demo@doctor.com", password: "password123" }); }} className="text-xs bg-green-100 p-2 rounded text-green-800 hover:bg-green-200">
+            Demo Doctor
+          </button>
+        </div>
+
         <button
           type="submit"
           disabled={loading}

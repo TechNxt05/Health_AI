@@ -148,11 +148,15 @@ def predict_disease_from_image():
     image = request.files.get('image')
 
     if image:
-        image_data = image.read()
-        mime_type = image.mimetype
-        print(f"Received image: {image.filename} with mime type: {mime_type}")
-        result = gen_ai_image('', image_data, mime_type, prompts=disease_from_image_prompt)
-        return jsonify({"data": result}), 200
+        try:
+            image_data = image.read()
+            mime_type = image.mimetype
+            print(f"Received image: {image.filename} with mime type: {mime_type}")
+            result = gen_ai_image('', image_data, mime_type, prompts=disease_from_image_prompt)
+            return jsonify({"data": result}), 200
+        except Exception as e:
+            print(f"Error processing image: {e}")
+            return jsonify({"error": str(e)}), 500
     else:
         return jsonify({"error": "Image not provided"}), 400
     
