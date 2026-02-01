@@ -25,10 +25,10 @@ function SignupForm() {
 
   return (
     <div
-      className="relative bg-cover bg-center text-center p-6 rounded-lg shadow-lg"
+      className="relative p-8 rounded-2xl shadow-2xl backdrop-blur-md border border-white/20"
       style={{
-        backgroundImage:
-          "url('https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/v996-026-kroiri0r.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=4577c6079475aabe21bb30ef2ce85b71')",
+        background: "var(--glass-bg)",
+        boxShadow: "var(--glass-shadow)"
       }}
     >
       {loading && (<Loader></Loader>)}
