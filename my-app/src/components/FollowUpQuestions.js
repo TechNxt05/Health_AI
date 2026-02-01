@@ -6,7 +6,7 @@ import DiagnosisReport from './DiagonsisReport';
 import TreatmentPlan from './TreatmentPlan';
 import Loader from './Loader';
 import './TimeLine.css';
-import { API_BASE, apiUrl } from "../api"; 
+import { API_BASE, apiUrl } from "../api";
 // Timeline component
 const Timeline = ({ activeStep, setActiveStep }) => {
   const stages = [
@@ -69,7 +69,7 @@ const FollowUpQuestions = () => {
     setLoading(true);
     try {
       console.log(data);
-      const response = await axios.post(apiUrl("/predict"), data );
+      const response = await axios.post(apiUrl("/predict"), data);
       console.log('Respone from predicted 1', response?.data);
       setPredictDisease(response?.data);
     } catch (err) {
@@ -86,7 +86,7 @@ const FollowUpQuestions = () => {
     setLoading(true);
     try {
       console.log(data);
-      const response = await axios.post(API_URL + '/questions-for-treatment', { data });
+      const response = await axios.post(apiUrl('/questions-for-treatment'), { data });
       console.log('Respone from predicted 2', response?.data);
       setTreatmentQuestions(response?.data?.questions);
     } catch (err) {
@@ -106,7 +106,7 @@ const FollowUpQuestions = () => {
     setLoading(true);
     try {
       console.log(data);
-      const response = await axios.post(API_URL + '/treatment-plan', { data });
+      const response = await axios.post(apiUrl('/treatment-plan'), { data });
       console.log('Respone from predicted after treatment follow up questions', response?.data);
       setFinalTreatmentPlan(response?.data);
     } catch (err) {
@@ -120,7 +120,7 @@ const FollowUpQuestions = () => {
       if (inputValue == '') return;
       const data = inputValue;
       console.log('Foloe up api is called', data);
-      const response = await axios.post(API_URL + '/follow-up-questions', { symptoms: data });
+      const response = await axios.post(apiUrl('/follow-up-questions'), { symptoms: data });
       console.log(response?.data);
       setPossibleDisease(response?.data?.possible_disease);
       setFollowQuestions(response?.data?.questions);

@@ -16,7 +16,7 @@ from utils.mongo_utils import db
 
 # --- Config ---
 FRONTEND_URL = os.getenv("FRONTEND_URL", "https://healthai-frontend-o32c.onrender.com")
-ALLOWED_ORIGINS = [
+    "https://health-ai-frontend-961v.onrender.com",
     FRONTEND_URL,
     "http://localhost:5173",
     "http://localhost:3000",
