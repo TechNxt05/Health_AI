@@ -55,9 +55,9 @@ function ResponsiveAppBar() {
     }}>
       <div className="logo" style={{
         color: 'var(--text-primary)',
-        textShadow: '0 2px 4px rgba(0,0,0,0.8)',
-        fontSize: '1.5rem',
-        fontWeight: '800',
+        textShadow: '0 0 10px rgba(6, 182, 212, 0.8)',
+        fontSize: '2rem',
+        fontWeight: '900',
         letterSpacing: '1px'
       }}>HEALTHAI</div>
       <div className="links">
