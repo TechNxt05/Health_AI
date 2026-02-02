@@ -80,12 +80,13 @@
 }
 
 .description h3 .Homepageheading {
-  color: var(--accent-color);
-  /* Neon Cyan accent */
-  background: linear-gradient(to right, #06b6d4, #3b82f6);
+  color: #22d3ee;
+  /* Fallback bright cyan */
+  /* Brighter Neon Gradient */
+  background: linear-gradient(to right, #22d3ee, #60a5fa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.8));
+  filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.6));
   /* Enhanced glow */
 }
 
@@ -902,14 +903,19 @@ td {
 }
 
 .navbar a[href="/login"] {
-  color: #0f172a;
-  background: transparent;
-  border: 2px solid #e2e8f0;
+  color: #ffffff !important;
+  /* Force white text */
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #06b6d4;
+  /* Neon cyan border */
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
 }
 
 .navbar a[href="/login"]:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
+  background: rgba(6, 182, 212, 0.1);
+  border-color: #22d3ee;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+  color: #22d3ee !important;
 }
 
 .navbar a[href="/signup"] {

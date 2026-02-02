@@ -89,8 +89,8 @@ function ResponsiveAppBar() {
         </ul>
       </div>
       {user ? (<ProfileOverlay></ProfileOverlay>) : (<div className='flex gap-4 justify-center'>
-        <a href="/login" className='text-sm font-semibold rounded-full bg-white text-indigo-600 hover:bg-slate-100 py-2 px-6 transition-all shadow-md hover:shadow-lg'>Login</a>
-        <a href="/signup" className='text-sm font-semibold rounded-full bg-indigo-600 text-white hover:bg-indigo-700 py-2 px-6 transition-all shadow-md hover:shadow-lg border border-indigo-500'>SignUp</a>
+        <a href="/login" className='linkItem' style={{ padding: '0.5rem 1.5rem', borderRadius: '10px', textDecoration: 'none', fontWeight: 'bold' }}>Login</a>
+        <a href="/signup" className='linkItem' style={{ padding: '0.5rem 1.5rem', borderRadius: '10px', textDecoration: 'none', fontWeight: 'bold' }}>SignUp</a>
       </div>)}
 
     </div>

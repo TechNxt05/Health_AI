@@ -45,12 +45,23 @@ def chat_with_ai():
 
 
 def generate_follow_up_questions():
-    initial_symptoms = request.json.get('symptoms')
-    print("initial_symptoms ", initial_symptoms)
-    result = gen_ai_json(initial_symptoms, prompts=question_generation_prompt)
-    result = json.loads(result)
+    try:
+        initial_symptoms = request.json.get('symptoms')
+        print("initial_symptoms ", initial_symptoms)
+        if not initial_symptoms:
+             return jsonify({"error": "No symptoms provided"}), 400
 
-    return jsonify(result), 200
+        result = gen_ai_json(initial_symptoms, prompts=question_generation_prompt)
+        
+        # Guard against empty/null result from AI
+        if not result:
+            return jsonify({"error": "AI returned empty response"}), 500
+
+        result = json.loads(result)
+        return jsonify(result), 200
+    except Exception as e:
+        print(f"Error in generate_follow_up_questions: {e}")
+        return jsonify({"error": str(e)}), 500
 
 def predict_disease():
     data = request.json

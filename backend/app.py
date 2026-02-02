@@ -1,5 +1,5 @@
-# import eventlet
-# eventlet.monkey_patch()  # must be first!
+import eventlet
+eventlet.monkey_patch()  # must be first!
 
 import os
 import gridfs
@@ -44,8 +44,7 @@ CORS(
 )
 socketio = SocketIO(
     app,
-    cors_allowed_origins=ALLOWED_ORIGINS,
-    async_mode="threading", 
+    cors_allowed_origins="*", # Allow all origins to fix connection issues
     ping_interval=25,
     ping_timeout=60,
 )
