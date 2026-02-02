@@ -948,75 +948,76 @@ td {
 .auth-input::placeholder {
   color: #94a3b8;
   /* Slate 400 */
+}
 
-  /* ULTRA MODERN NEON CRAZY STYLES */
+/* ULTRA MODERN NEON CRAZY STYLES */
 
-  @keyframes pulse-glow {
-    0% {
-      box-shadow: 0 0 5px var(--accent-color);
-    }
-
-    50% {
-      box-shadow: 0 0 20px var(--accent-color), 0 0 10px var(--accent-color);
-    }
-
-    100% {
-      box-shadow: 0 0 5px var(--accent-color);
-    }
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 5px var(--accent-color);
   }
 
-  @keyframes text-shine {
-    0% {
-      background-position: 0% 50%;
-    }
-
-    100% {
-      background-position: 200% 50%;
-    }
+  50% {
+    box-shadow: 0 0 20px var(--accent-color), 0 0 10px var(--accent-color);
   }
 
-  .description h3 {
-    font-size: 5rem;
-    /* Massive text */
-    text-transform: uppercase;
-    letter-spacing: -2px;
-    color: white;
-    /* Ensure white base */
+  100% {
+    box-shadow: 0 0 5px var(--accent-color);
+  }
+}
+
+@keyframes text-shine {
+  0% {
+    background-position: 0% 50%;
   }
 
-  .description h3 .Homepageheading {
-    background: linear-gradient(to right,
-        #06b6d4 20%,
-        #a855f7 40%,
-        #3b82f6 60%,
-        #06b6d4 80%);
-    background-size: 200% auto;
-    color: #fff;
-    background-clip: text;
-    text-fill-color: transparent;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: text-shine 4s linear infinite;
-    filter: drop-shadow(0 0 15px rgba(6, 182, 212, 0.8));
+  100% {
+    background-position: 200% 50%;
   }
+}
 
-  .homepageChatBot {
-    background: linear-gradient(45deg, #06b6d4, #a855f7);
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-  }
+.description h3 {
+  font-size: 5rem;
+  /* Massive text */
+  text-transform: uppercase;
+  letter-spacing: -2px;
+  color: white;
+  /* Ensure white base */
+}
 
-  .navbar a[href="/signup"] {
-    background: linear-gradient(45deg, #06b6d4, #3b82f6);
-    border: none !important;
-    color: white !important;
-    box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
-    animation: pulse-glow 3s infinite;
-  }
+.description h3 .Homepageheading {
+  background: linear-gradient(to right,
+      #06b6d4 20%,
+      #a855f7 40%,
+      #3b82f6 60%,
+      #06b6d4 80%);
+  background-size: 200% auto;
+  color: #fff;
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-shine 4s linear infinite;
+  filter: drop-shadow(0 0 15px rgba(6, 182, 212, 0.8));
+}
 
-  /* Override overrides */
-  .cardCompnent {
-    background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(6, 182, 212, 0.3) !important;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(6, 182, 212, 0.1) !important;
-  }
+.homepageChatBot {
+  background: linear-gradient(45deg, #06b6d4, #a855f7);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.navbar a[href="/signup"] {
+  background: linear-gradient(45deg, #06b6d4, #3b82f6);
+  border: none !important;
+  color: white !important;
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+  animation: pulse-glow 3s infinite;
+}
+
+/* Override overrides */
+.cardCompnent {
+  background: rgba(15, 23, 42, 0.6) !important;
+  border: 1px solid rgba(6, 182, 212, 0.3) !important;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(6, 182, 212, 0.1) !important;
+}
