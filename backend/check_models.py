@@ -4,9 +4,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-        for m in genai.list_models():
-            if 'generateContent' in m.supported_generation_methods:
-                f.write(f"{m.name}\n")
-    print("Models written to models_list.txt")
+try:
+    genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
+    print("Listing available models...")
+    for m in genai.list_models():
+        if 'generateContent' in m.supported_generation_methods:
+            print(f"- {m.name}")
 except Exception as e:
     print(f"Error listing models: {e}")
