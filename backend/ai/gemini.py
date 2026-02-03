@@ -45,14 +45,14 @@ generation_config_json = {
 # files = [upload_to_gemini("Image October 11, 2024 - 11:21AM.jpeg", mime_type="image/jpeg"),]
 
 model1 = genai.GenerativeModel(
-  model_name="gemini-1.5-flash-001",
+  model_name="gemini-pro",
   generation_config=generation_config,
   system_instruction=system_prompt_1,
 )
 # history :  {role : "user" | "model", parts:[files[0], text, text] }
 
 model3 = genai.GenerativeModel(
-  model_name="gemini-1.5-flash-001",
+  model_name="gemini-pro",
   generation_config=generation_config,
 )
 
@@ -63,7 +63,7 @@ def chat_with_gemini(input_text, history):
 
 
 model2 = genai.GenerativeModel(
-  model_name="gemini-1.5-flash-001",
+  model_name="gemini-pro",
   generation_config=generation_config_json,
 )
 
