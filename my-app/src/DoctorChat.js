@@ -9,7 +9,7 @@ import VideoCall from './VideoCall';
 
 const socket = io(SOCKET_URL, {
   path: SOCKET_PATH,
-  transports: ["polling"], // Force polling for stability with Flask dev server
+  transports: ["polling", "websocket"], // Allow upgrade to websocket for better performance
 });
 
 
