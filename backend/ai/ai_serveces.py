@@ -58,7 +58,7 @@ def get_conversational_chain():
 
     Now analyze the image or text or both and answer the above questions in the same structured manner defined above."""
 
-    model = genai.GenerativeModel('gemini-2.0-flash', temperature=0.3)
+    model = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.3)
     prompt = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
     return load_qa_chain(model, chain_type="stuff", prompt=prompt)
 

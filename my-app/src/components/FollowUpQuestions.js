@@ -125,7 +125,11 @@ const FollowUpQuestions = () => {
       setPossibleDisease(response?.data?.possible_disease);
       setFollowQuestions(response?.data?.questions);
     } catch (err) {
-      console.log('Error  in follow-up questions');
+      console.error('Error in follow-up questions:', err);
+      if (err.response) {
+        console.error('Server Data:', err.response.data);
+        console.error('Server Status:', err.response.status);
+      }
     }
     setLoading(false);
   }
