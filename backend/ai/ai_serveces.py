@@ -43,7 +43,8 @@ def convert_pdfs_to_vectors(dir_path=PDF_DIRECTORY):
             get_vector_store(text_chunks)
 
 
-def get_conversational_chain():
+
+def get_conversational_chain(model_name="gemini-pro"):
     prompt_template = """You are a medical practitioner and an expert in analyzing medical related images or symptoms working for a
     very reputed hospital. You will be provided with images or text or both and you need to identify the anomalies, any disease or
     health issues. You need to generate the result in detailed manner. Write all the findings, next steps,
@@ -58,7 +59,7 @@ def get_conversational_chain():
 
     Now analyze the image or text or both and answer the above questions in the same structured manner defined above."""
 
-    model = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.3)
+    model = ChatGoogleGenerativeAI(model=model_name, temperature=0.3)
     prompt = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
     return load_qa_chain(model, chain_type="stuff", prompt=prompt)
 
@@ -73,10 +74,19 @@ def user_input(user_question):
     new_db = FAISS.load_local(faiss_index_path, embeddings, allow_dangerous_deserialization=True)
     docs = new_db.similarity_search(user_question)
 
-    chain = get_conversational_chain()
-    response = chain({"input_documents": docs, "question": user_question}, return_only_outputs=True)
-
-    return response
+    FALLBACK_MODELS = ["gemini-pro", "gemini-1.5-flash", "gemini-1.5-flash-001", "gemini-1.0-pro"]
+    
+    for model_name in FALLBACK_MODELS:
+        try:
+            print(f"Trying PDF Chat with model: {model_name}")
+            chain = get_conversational_chain(model_name=model_name)
+            response = chain({"input_documents": docs, "question": user_question}, return_only_outputs=True)
+            return response
+        except Exception as e:
+            print(f"Error with {model_name}: {e}")
+            continue
+            
+    raise Exception("All Gemini models failed for PDF Chat.")
 
 # Example usage
 if __name__ == "__main__":

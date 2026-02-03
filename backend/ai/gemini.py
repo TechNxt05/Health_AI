@@ -42,55 +42,87 @@ generation_config_json = {
 
 
 
-# files = [upload_to_gemini("Image October 11, 2024 - 11:21AM.jpeg", mime_type="image/jpeg"),]
 
-model1 = genai.GenerativeModel(
-  model_name="gemini-pro",
-  generation_config=generation_config,
-  system_instruction=system_prompt_1,
-)
-# history :  {role : "user" | "model", parts:[files[0], text, text] }
-
-model3 = genai.GenerativeModel(
-  model_name="gemini-pro",
-  generation_config=generation_config,
-)
+FALLBACK_MODELS = ["gemini-pro", "gemini-1.5-flash", "gemini-1.5-flash-001", "gemini-1.0-pro"]
 
 def chat_with_gemini(input_text, history):
-  chat_session = model1.start_chat(history=history)
-  response = chat_session.send_message(input_text)
-  return response.text
-
-
-model2 = genai.GenerativeModel(
-  model_name="gemini-pro",
-  generation_config=generation_config_json,
-)
+    for model_name in FALLBACK_MODELS:
+        try:
+            print(f"Trying chat with model: {model_name}")
+            model = genai.GenerativeModel(
+                model_name=model_name,
+                generation_config=generation_config,
+                system_instruction=system_prompt_1,
+            )
+            chat_session = model.start_chat(history=history)
+            response = chat_session.send_message(input_text)
+            return response.text
+        except Exception as e:
+            print(f"Error with {model_name}: {e}")
+            continue
+    raise Exception("All Gemini models failed for chat.")
 
 def gen_ai_json(question, prompts):
-  prompts.append(f"input: {question}")
-  prompts.append("output: ")
-  response = model2.generate_content(prompts)
-  return  response.text
+    prompts_copy = prompts.copy() # Avoid modifying original list in retry loop
+    prompts_copy.append(f"input: {question}")
+    prompts_copy.append("output: ")
+    
+    for model_name in FALLBACK_MODELS:
+        try:
+            print(f"Trying JSON gen with model: {model_name}")
+            model = genai.GenerativeModel(
+                model_name=model_name,
+                generation_config=generation_config_json,
+            )
+            response = model.generate_content(prompts_copy)
+            return response.text
+        except Exception as e:
+            print(f"Error with {model_name}: {e}")
+            continue
+    raise Exception("All Gemini models failed for JSON generation.")
 
 def gen_ai_image(question, image, mime_type, prompts):
-  files = [
-    upload_to_gemini(image, mime_type),
-  ]
-  print(files[0])
-  prompts.append(f"input: {question}")
-  prompts.append(files[0])
-  prompts.append("output: ")
-  response = model3.generate_content(prompts)
-  return response.text
+    files = [upload_to_gemini(image, mime_type)]
+    print(files[0])
+    
+    prompts_copy = prompts.copy()
+    prompts_copy.append(f"input: {question}")
+    prompts_copy.append(files[0])
+    prompts_copy.append("output: ")
+    
+    for model_name in FALLBACK_MODELS:
+        try:
+            print(f"Trying Image gen with model: {model_name}")
+            model = genai.GenerativeModel(
+                model_name=model_name,
+                generation_config=generation_config,
+            )
+            response = model.generate_content(prompts_copy)
+            return response.text
+        except Exception as e:
+            print(f"Error with {model_name}: {e}")
+            continue
+    raise Exception("All Gemini models failed for Image generation.")
 
 def gen_ai_image_json(question, image, mime_type, prompts):
-  files = [
-    upload_to_gemini(image, mime_type),
-  ]
-  print(files[0])
-  prompts.append(f"input: {question}")
-  prompts.append(files[0])
-  prompts.append("output: ")
-  response = model2.generate_content(prompts)
-  return response.text
+    files = [upload_to_gemini(image, mime_type)]
+    print(files[0])
+    
+    prompts_copy = prompts.copy()
+    prompts_copy.append(f"input: {question}")
+    prompts_copy.append(files[0])
+    prompts_copy.append("output: ")
+    
+    for model_name in FALLBACK_MODELS:
+        try:
+            print(f"Trying Image JSON gen with model: {model_name}")
+            model = genai.GenerativeModel(
+                model_name=model_name,
+                generation_config=generation_config_json,
+            )
+            response = model.generate_content(prompts_copy)
+            return response.text
+        except Exception as e:
+            print(f"Error with {model_name}: {e}")
+            continue
+    raise Exception("All Gemini models failed for Image JSON generation.")
