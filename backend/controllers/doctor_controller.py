@@ -18,7 +18,7 @@ def add_doctor():
     existing_doctor = doctor_db.find_one({"email": doctor.get("email")}) 
     
     if existing_doctor:
-        return jsonify({"error": "Doctor already exists"}), 400
+        return jsonify({"message": "Doctor already exists"}), 400
     
     doctor['password'] = hash_password(doctor['password'])
     
@@ -28,7 +28,7 @@ def add_doctor():
         del doctor['password'] 
         return jsonify(doctor), 201
     except DuplicateKeyError:
-        return jsonify({"error": "Doctor already exists"}), 400
+        return jsonify({"message": "Doctor already exists"}), 400
     
 def update_doctor(id):
     doctor = request.json
@@ -37,7 +37,7 @@ def update_doctor(id):
         if result.modified_count > 0:
             return jsonify({"message": "Doctor updated successfully"}), 200
         else:
-            return jsonify({"error": "Doctor not found"}), 404
+            return jsonify({"message": "Doctor not found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -55,7 +55,7 @@ def signin():
         del doctor['password']  # Remove password from the response
         return jsonify(doctor), 200
     else:
-        return jsonify({"error": "Invalid email or password"}), 401
+        return jsonify({"message": "Invalid email or password"}), 401
 
 def get_doctor_by_id(id):
     try:
@@ -70,7 +70,7 @@ def get_doctor_by_id(id):
             del doctor['password']  # Optionally remove password
             return jsonify(doctor), 200
         else:
-            return jsonify({"error": "Doctor not found"}), 404
+            return jsonify({"message": "Doctor not found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
