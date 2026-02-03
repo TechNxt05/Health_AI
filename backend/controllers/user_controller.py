@@ -60,7 +60,7 @@ def signin():
     if bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
         user['_id'] = str(user['_id']) 
         del user['password'] 
-        del user.get('confirmPassword', None) # Safely delete if exists
+        user.pop('confirmPassword', None) # Safely delete if exists
         return jsonify(user), 200
     else:
         return jsonify({"message": "Invalid password. Please try again."}), 401
