@@ -7,6 +7,7 @@ import TreatmentPlan from './TreatmentPlan';
 import Loader from './Loader';
 import './TimeLine.css';
 import { API_BASE, apiUrl } from "../api";
+import { toast } from 'react-hot-toast';
 // Timeline component
 const Timeline = ({ activeStep, setActiveStep }) => {
   const stages = [
@@ -126,10 +127,8 @@ const FollowUpQuestions = () => {
       setFollowQuestions(response?.data?.questions);
     } catch (err) {
       console.error('Error in follow-up questions:', err);
-      if (err.response) {
-        console.error('Server Data:', err.response.data);
-        console.error('Server Status:', err.response.status);
-      }
+      const errorMessage = err.response?.data?.message || err.response?.data?.error || "AI Service Unavailable. Please try again.";
+      toast.error(errorMessage);
     }
     setLoading(false);
   }

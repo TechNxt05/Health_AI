@@ -26,7 +26,7 @@ def get_user_by_id(user_id):
         del user['password'] 
         return jsonify(user)
     else:
-        return jsonify({"error": "User not found"}), 404
+        return jsonify({"message": "User not found"}), 404
 
 # Add user with password hashing
 def add_user():
@@ -35,7 +35,7 @@ def add_user():
     # print(type(user), user)
     existing_user = users_collection.find_one({"email": user['email']})
     if existing_user:
-        return jsonify({"error": "User already exists"}), 400
+        return jsonify({"message": "User already exists"}), 400
     
     user['password'] = hash_password(user['password'])
     
@@ -45,7 +45,7 @@ def add_user():
         del user['password'] 
         return jsonify(user), 201
     except DuplicateKeyError:
-        return jsonify({"error": "User already exists"}), 400
+        return jsonify({"message": "User already exists"}), 400
 
 def signin():
     data = request.json
@@ -54,13 +54,16 @@ def signin():
     # Retrieve user by email
     user = users_collection.find_one({"email": email})
     
-    if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+    if not user:
+        return jsonify({"message": "User does not exist. Please Sign Up."}), 404
+        
+    if bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
         user['_id'] = str(user['_id']) 
         del user['password'] 
-        del user['confirmPassword']
+        del user.get('confirmPassword', None) # Safely delete if exists
         return jsonify(user), 200
     else:
-        return jsonify({"error": "Invalid email or password"}), 401
+        return jsonify({"message": "Invalid password. Please try again."}), 401
 
 def get_users_by_specialization():
     specialization = request.args.get('specialization', '') 

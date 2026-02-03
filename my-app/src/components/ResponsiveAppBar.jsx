@@ -55,36 +55,54 @@ function ResponsiveAppBar() {
     }}>
       <div className="logo" style={{
         color: 'var(--text-primary)',
-        textShadow: '0 0 10px rgba(6, 182, 212, 0.8)',
-        fontSize: '2rem',
-        fontWeight: '900',
-        letterSpacing: '1px'
+        textShadow: '0 0 20px rgba(6, 182, 212, 0.5)', // Softer, more spread out glow
+        fontSize: '1.8rem', // Slightly smaller for elegance
+        fontWeight: '800',
+        letterSpacing: '2px', // More spacing
+        background: 'linear-gradient(to right, #22d3ee, #60a5fa)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
       }}>HEALTHAI</div>
       <div className="links">
-        <ul className="ulLinks">
+        <ul className="ulLinks" style={{ display: 'flex', gap: '2rem', listStyle: 'none', alignItems: 'center' }}>
           {[
             { name: 'Home', path: '/' },
             { name: 'Chat Bot', path: '/chatbot' },
             { name: 'Disease Diagnosis', path: '/diagonsis' },
           ].map((item) => (
             <li className="linkItem" key={item.name}>
-              <a href={item.path} style={{ color: 'var(--text-primary)', fontWeight: '600', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>{item.name}</a>
+              <a href={item.path} style={{ color: 'var(--text-secondary)', fontWeight: '500', transition: 'color 0.3s' }}
+                onMouseEnter={(e) => e.target.style.color = 'var(--accent-color)'}
+                onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
+              >{item.name}</a>
             </li>
           ))}
 
-          <li className="linkItem" onClick={() => handleMenuClick(analyseImage)} style={{ color: 'var(--text-primary)', fontWeight: '600', textShadow: '0 1px 2px rgba(0,0,0,0.8)', cursor: 'pointer' }}>
+          <li className="linkItem" onClick={() => handleMenuClick(analyseImage)} style={{ color: 'var(--text-secondary)', fontWeight: '500', cursor: 'pointer', transition: 'color 0.3s' }}
+            onMouseEnter={(e) => e.target.style.color = 'var(--accent-color)'}
+            onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
+          >
             Image Analysis
           </li>
-          <li className="linkItem" onClick={() => handleMenuClick(dataset)} style={{ color: 'var(--text-primary)', fontWeight: '600', textShadow: '0 1px 2px rgba(0,0,0,0.8)', cursor: 'pointer' }}>
+          <li className="linkItem" onClick={() => handleMenuClick(dataset)} style={{ color: 'var(--text-secondary)', fontWeight: '500', cursor: 'pointer', transition: 'color 0.3s' }}
+            onMouseEnter={(e) => e.target.style.color = 'var(--accent-color)'}
+            onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
+          >
             Dataset Generation
           </li>
           {showPopUp && <PopUp onClose={() => setShowPopUp(false)} data={popUpData} />}
 
           <li className="linkItem">
-            <a href="/doctors-profile" style={{ color: 'var(--text-primary)', fontWeight: '600', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>Connect with Doctor</a>
+            <a href="/doctors-profile" style={{ color: 'var(--text-secondary)', fontWeight: '500', transition: 'color 0.3s' }}
+              onMouseEnter={(e) => e.target.style.color = 'var(--accent-color)'}
+              onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
+            >Connect with Doctor</a>
           </li>
           <li className="linkItem">
-            <a href="/druggeneration" style={{ color: 'var(--text-primary)', fontWeight: '600', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>Drug Generation</a>
+            <a href="/druggeneration" style={{ color: 'var(--text-secondary)', fontWeight: '500', transition: 'color 0.3s' }}
+              onMouseEnter={(e) => e.target.style.color = 'var(--accent-color)'}
+              onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
+            >Drug Generation</a>
           </li>
         </ul>
       </div>
